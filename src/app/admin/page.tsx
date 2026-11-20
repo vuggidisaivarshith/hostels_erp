@@ -11,7 +11,11 @@ import {
   ArrowRight,
   Layers,
   GraduationCap,
-  Plane
+  Plane,
+  UserCheck,
+  ArrowRightLeft,
+  LifeBuoy,
+  FileText
 } from 'lucide-react';
 
 export default function AdminOverviewPage() {
@@ -21,63 +25,117 @@ export default function AdminOverviewPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
-            Owner & Management Hub
+            Owner & Central Management Control
           </span>
           <h1 className="text-3xl font-black text-white mt-1">
-            DEVI HOSTELS Central Control
+            DEVI HOSTELS Operations Hub
           </h1>
           <p className="text-xs text-slate-400">
-            Proprietor: <strong>MARPINA PRADEEP</strong> • Shamshabad, Hyderabad
+            Proprietor: <strong>MARPINA PRADEEP</strong> • Shamshabad, Hyderabad (5 Centralized Branches)
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Link
-            href="/admin/enquiries"
-            className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
+            href="/admin/admissions"
+            className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
           >
-            <Users className="w-4 h-4" />
-            Manage Enquiries Pipeline
+            <UserCheck className="w-4 h-4" />
+            New Admission
+          </Link>
+          <Link
+            href="/admin/inventory"
+            className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white font-semibold text-xs"
+          >
+            Room & Bed Vacancy
           </Link>
         </div>
       </div>
 
-      {/* Top Metric Cards */}
+      {/* Main Administrative Action Pillars */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-2">
-          <p className="text-xs font-bold uppercase text-slate-400">Centralized Branches</p>
-          <p className="text-3xl font-black text-white">5</p>
-          <p className="text-xs text-amber-400 font-medium">4 Boys Hostels + 1 Girls Hostel</p>
-        </div>
+        <Link
+          href="/admin/inventory"
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+            <Layers className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+            Bed Inventory & Vacancy
+          </h3>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Branch ➔ Floor ➔ Room ➔ Bed allocation matrix with double-allocation prevention.
+          </p>
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1 pt-1">
+            Open Bed Matrix <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-2">
-          <p className="text-xs font-bold uppercase text-slate-400">Operational Hub</p>
-          <p className="text-xl font-black text-white">Shamshabad</p>
-          <p className="text-xs text-emerald-400 font-medium">4-8 min to RGIA Airport</p>
-        </div>
+        <Link
+          href="/admin/residents"
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+            <Users className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+            Resident Directory
+          </h3>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Search active & historical resident records, permanent DEVI IDs, stays & profiles.
+          </p>
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1 pt-1">
+            View Residents <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-2">
-          <p className="text-xs font-bold uppercase text-slate-400">Target Residents</p>
-          <p className="text-xl font-black text-white">Students & Airport</p>
-          <p className="text-xs text-blue-400 font-medium">Colleges & Airlines Staff</p>
-        </div>
+        <Link
+          href="/admin/admissions"
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+            <UserCheck className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+            Admission & ID Engine
+          </h3>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Confirm admission, generate collision-safe IDs (`DV1-1-XXXXX`), and assign beds.
+          </p>
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1 pt-1">
+            Admit Resident <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-2">
-          <p className="text-xs font-bold uppercase text-slate-400">Current Roadmap</p>
-          <p className="text-xl font-black text-amber-400">Phase 1 Complete</p>
-          <p className="text-xs text-slate-400 font-medium">Website, Enquiries & Schema</p>
-        </div>
+        <Link
+          href="/admin/operations"
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+            <ArrowRightLeft className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+            Operations & Transfers
+          </h3>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Execute room/branch transfers preserving permanent IDs, checkouts, and maintenance tickets.
+          </p>
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1 pt-1">
+            Manage Operations <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
       </div>
 
-      {/* 5 Branches Operational Grid */}
+      {/* Five Branch Status Overview */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold text-white flex items-center gap-2">
             <Building2 className="w-5 h-5 text-amber-500" />
-            Five Branch Status Overview
+            Centralized 5-Branch Network
           </h3>
           <Link href="/branches" className="text-xs font-bold text-amber-400 hover:underline">
-            Public Directory →
+            Public Website Directory →
           </Link>
         </div>
 
@@ -94,7 +152,7 @@ export default function AdminOverviewPage() {
                 <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
                   b.gender_category === 'girls' ? 'bg-rose-500/20 text-rose-300' : 'bg-blue-500/20 text-blue-300'
                 }`}>
-                  {b.gender_category === 'girls' ? 'Girls Only' : 'Boys Hostel'}
+                  {b.gender_category === 'girls' ? 'Girls Only Enclave' : 'Boys Hostel'}
                 </span>
               </div>
 
@@ -107,36 +165,14 @@ export default function AdminOverviewPage() {
               <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
                 <span className="text-slate-400">{b.total_floors} Floors</span>
                 <Link
-                  href={`/branches/${b.branch_code}`}
+                  href={`/admin/inventory?branch=${b.branch_code}`}
                   className="text-amber-400 font-bold hover:underline"
                 >
-                  View Details →
+                  Inspect Bed Matrix →
                 </Link>
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Quick Links to Upcoming Phases */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-4">
-        <h3 className="text-lg font-bold text-white">System Architecture & Phase Gateways</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-            <span className="text-[10px] font-bold uppercase text-emerald-400">Phase 1 (Completed)</span>
-            <p className="font-bold text-white">Foundation, DB & Public Web</p>
-            <p className="text-slate-400">All 5 branch portals, responsive multi-step enquiry form, centralized schema & admin pipeline.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 opacity-80">
-            <span className="text-[10px] font-bold uppercase text-amber-400">Phase 2 (Next Gate)</span>
-            <p className="font-bold text-white">Resident Lifecycle & Beds</p>
-            <p className="text-slate-400">Floor/bed visual allocation, permanent Resident ID engine, and dual authentication resident portal.</p>
-          </div>
-          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2 opacity-80">
-            <span className="text-[10px] font-bold uppercase text-blue-400">Phase 3 (Financials)</span>
-            <p className="font-bold text-white">Joining-Date Billing Engine</p>
-            <p className="text-slate-400">Recurring 30-day billing, advance rent ledger, refundable deposits, Razorpay and verified UPI recording.</p>
-          </div>
         </div>
       </div>
     </div>

@@ -2,28 +2,30 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { UserCheck, Smartphone, KeyRound, ShieldAlert, CheckCircle2, ArrowRight, Lock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { UserCheck, Smartphone, KeyRound, ArrowRight, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function ResidentLoginPage() {
+  const router = useRouter();
   const [authMethod, setAuthMethod] = useState<'otp' | 'password'>('otp');
-  
+
   // Method 1: Mobile + OTP
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState('9849111222');
   const [otpSent, setOtpSent] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  
+  const [otpCode, setOtpCode] = useState('123456');
+
   // Method 2: Resident ID + Password
-  const [residentId, setResidentId] = useState('');
-  const [password, setPassword] = useState('');
+  const [residentId, setResidentId] = useState('DV1-1-00001');
+  const [password, setPassword] = useState('devi123');
 
   const [loading, setLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error' | 'info'; text: string } | null>(null);
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
     const cleanPhone = phone.replace(/\D/g, '');
     if (cleanPhone.length < 10) {
-      setStatusMessage({ type: 'error', text: 'Please enter a valid 10-digit mobile number registered with DEVI Hostels.' });
+      setStatusMessage({ type: 'error', text: 'Please enter a valid 10-digit mobile number.' });
       return;
     }
     setLoading(true);
@@ -32,45 +34,67 @@ export default function ResidentLoginPage() {
       setOtpSent(true);
       setStatusMessage({
         type: 'success',
-        text: `OTP sent to +91 ${cleanPhone}. (Phase 2 Live SMS Gateway Simulation: Use code 123456)`
+        text: `OTP dispatched to +91 ${cleanPhone}. (Use demo verification code 123456)`
       });
-    }, 600);
+    }, 400);
   };
 
-  const handleVerifyOtp = (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otpCode !== '123456' && otpCode.length < 4) {
-      setStatusMessage({ type: 'error', text: 'Invalid OTP code. Please enter the verification code sent to your phone.' });
-      return;
-    }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setStatusMessage({
-        type: 'info',
-        text: 'Authentication validated! The full Resident Self-Service Dashboard (Invoices, UPI payments, Deposit balances) will unlock upon Phase 2 activation.'
+    setStatusMessage(null);
+
+    try {
+      const res = await fetch('/api/auth/resident-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          method: 'otp',
+          phone,
+          otp: otpCode,
+        }),
       });
-    }, 600);
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Authentication failed.');
+      }
+
+      router.push('/resident/dashboard');
+    } catch (err) {
+      setStatusMessage({ type: 'error', text: (err as Error).message });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handlePasswordLogin = (e: React.FormEvent) => {
+  const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!residentId.trim().toUpperCase().startsWith('DV')) {
-      setStatusMessage({ type: 'error', text: 'Invalid Resident ID format. Must begin with DV[1-5]-[1-6]-[SERIAL] (e.g. DV1-1-00001).' });
-      return;
-    }
-    if (password.length < 6) {
-      setStatusMessage({ type: 'error', text: 'Password must be at least 6 characters.' });
-      return;
-    }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setStatusMessage({
-        type: 'info',
-        text: `Resident ID ${residentId.toUpperCase()} verified! Resident portal features are scheduled for Phase 2 activation.`
+    setStatusMessage(null);
+
+    try {
+      const res = await fetch('/api/auth/resident-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          method: 'password',
+          resident_id: residentId,
+          password,
+        }),
       });
-    }, 600);
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Authentication failed.');
+      }
+
+      router.push('/resident/dashboard');
+    } catch (err) {
+      setStatusMessage({ type: 'error', text: (err as Error).message });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -84,7 +108,7 @@ export default function ResidentLoginPage() {
           DEVI Resident Portal
         </h1>
         <p className="text-xs text-slate-400">
-          Access your digital ID, monthly invoices, receipts, and advance rent balance.
+          Sign in to view your room allotment, monthly rent invoices, and digital receipts.
         </p>
       </div>
 
@@ -129,13 +153,20 @@ export default function ResidentLoginPage() {
           <div className={`p-4 rounded-xl text-xs font-semibold ${
             statusMessage.type === 'error'
               ? 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
-              : statusMessage.type === 'success'
-              ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
-              : 'bg-blue-500/10 border border-blue-500/30 text-blue-300'
+              : 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
           }`}>
             {statusMessage.text}
           </div>
         )}
+
+        {/* Quick Demo Credentials Assistant */}
+        <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+          <p className="font-bold text-amber-400 uppercase text-[10px]">Demo Resident Test Accounts:</p>
+          <p>• <strong>Student:</strong> Phone: <code>9849111222</code> | ID: <code>DV1-1-00001</code></p>
+          <p>• <strong>Airport Staff:</strong> Phone: <code>9876500111</code> | ID: <code>DV2-2-00002</code></p>
+          <p>• <strong>Girls Branch:</strong> Phone: <code>9701234567</code> | ID: <code>DV5-1-00003</code></p>
+          <p className="text-[10px] text-slate-500">Default Password: <code>devi123</code> | Demo OTP: <code>123456</code></p>
+        </div>
 
         {/* METHOD 1: Mobile + OTP Form */}
         {authMethod === 'otp' ? (
@@ -154,13 +185,10 @@ export default function ResidentLoginPage() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="9849012345"
+                    placeholder="9849111222"
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-12 pr-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 font-mono"
                   />
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">
-                  Enter the phone number registered during your hostel admission.
-                </p>
               </div>
 
               <button
@@ -221,9 +249,6 @@ export default function ResidentLoginPage() {
                 placeholder="e.g. DV1-1-00001"
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 font-mono uppercase"
               />
-              <p className="text-[11px] text-slate-500 mt-1">
-                Format: DV[Branch]-[Floor]-[Number]
-              </p>
             </div>
 
             <div>
@@ -257,9 +282,6 @@ export default function ResidentLoginPage() {
             <Link href="/enquiry" className="text-amber-400 font-semibold hover:underline">
               Submit Admission Enquiry
             </Link>
-          </p>
-          <p className="text-[11px] text-slate-500">
-            For login assistance, call Owner Marpina Pradeep at +91 98480 12345
           </p>
         </div>
       </div>
