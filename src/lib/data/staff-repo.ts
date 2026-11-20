@@ -115,11 +115,11 @@ export function createStaffMember(input: {
 export function updateStaffStatus(
   id: string,
   status: 'active' | 'inactive'
-): { success: boolean; error?: string } {
+): { success: boolean; staff?: StaffMember; error?: string } {
   const staff = staffStore.find((s) => s.id === id);
   if (!staff) {
     return { success: false, error: 'Staff member not found.' };
   }
   staff.status = status;
-  return { success: true };
+  return { success: true, staff };
 }

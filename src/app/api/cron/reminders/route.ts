@@ -14,9 +14,9 @@ export async function POST(request: NextRequest) {
 async function handleCronReminders(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET;
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      return NextResponse.json({ success: false, error: 'Unauthorized cron trigger.' }, { status: 401 });
+    const cronSecret = process.env.CRON_SECRET || 'devi_hostels_cron_internal_2026';
+    if (!authHeader || authHeader !== `Bearer ${cronSecret}`) {
+      return NextResponse.json({ success: false, error: 'Unauthorized cron trigger. Valid Bearer token required.' }, { status: 401 });
     }
 
     const todayStr = new Date().toISOString().split('T')[0];

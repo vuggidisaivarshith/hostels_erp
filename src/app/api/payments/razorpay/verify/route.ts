@@ -32,20 +32,25 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Cryptographic signature check
-    const secret = process.env.RAZORPAY_KEY_SECRET || 'placeholder_secret';
-    if (razorpay_signature && process.env.NODE_ENV === 'production') {
-      const generatedSignature = crypto
-        .createHmac('sha256', secret)
-        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-        .digest('hex');
+    // Mandatory Cryptographic signature check
+    const secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_WEBHOOK_SECRET || 'sK2fdECWh3ItJvA19HBhm7Ru';
+    if (!razorpay_signature) {
+      return NextResponse.json(
+        { success: false, error: 'Signature is mandatory for payment verification.' },
+        { status: 400 }
+      );
+    }
 
-      if (generatedSignature !== razorpay_signature) {
-        return NextResponse.json(
-          { success: false, error: 'Invalid payment signature. Potential tampering detected.' },
-          { status: 400 }
-        );
-      }
+    const generatedSignature = crypto
+      .createHmac('sha256', secret)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest('hex');
+
+    if (generatedSignature !== razorpay_signature) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid payment signature. Cryptographic verification failed.' },
+        { status: 400 }
+      );
     }
 
     // Record verified transaction in ledger

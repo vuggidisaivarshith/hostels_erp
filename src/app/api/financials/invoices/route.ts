@@ -1,16 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getInvoices, generateResidentInvoice } from '@/lib/data/financials-repo';
+import { verifyStaffAuth, verifyResidentAuth } from '@/lib/auth/rbac';
 
 export async function GET(request: NextRequest) {
   try {
+    const staffCheck = verifyStaffAuth(request);
+    let residentIdFilter: string | undefined = undefined;
+
+    if (!staffCheck.authenticated) {
+      const residentCheck = verifyResidentAuth(request);
+      if (!residentCheck.authenticated || !residentCheck.resident) {
+        return NextResponse.json(
+          { success: false, error: 'Unauthorized. Staff or resident session required.' },
+          { status: 401 }
+        );
+      }
+      residentIdFilter = residentCheck.resident.residentId;
+    }
+
     const { searchParams } = new URL(request.url);
     const branchCode = searchParams.get('branch_code');
     const residentId = searchParams.get('resident_id');
     const status = searchParams.get('status');
 
+    const effectiveResidentId = residentIdFilter || residentId || undefined;
+
     const invoices = getInvoices({
       branchCode: branchCode ? parseInt(branchCode, 10) : undefined,
-      residentId: residentId || undefined,
+      residentId: effectiveResidentId,
       status: status || undefined,
     });
 
@@ -25,6 +42,18 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Only owner or accountant can issue invoices
+    const staffCheck = verifyStaffAuth(request, {
+      allowedRoles: ['owner', 'accountant'],
+    });
+
+    if (!staffCheck.authenticated) {
+      return NextResponse.json(
+        { success: false, error: staffCheck.error || 'Unauthorized. Only Owner or Accountant can issue invoices.' },
+        { status: staffCheck.statusCode || 403 }
+      );
+    }
+
     const body = await request.json();
     const { resident_id, additional_charges, notes } = body;
 

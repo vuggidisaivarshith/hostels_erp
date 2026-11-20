@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { confirmAdmission, ConfirmAdmissionInput } from '@/lib/data/residents-repo';
 import { updateEnquiryStatus } from '@/lib/data/enquiries-repo';
+import { verifyStaffAuth } from '@/lib/auth/rbac';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,6 +31,20 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
+    }
+
+    // Server-side authorization check: Only owner or branch_manager for the assigned branch
+    const branchCodeNum = parseInt(String(body.branch_code), 10);
+    const staffCheck = verifyStaffAuth(request, {
+      allowedRoles: ['owner', 'branch_manager'],
+      requiredBranchCode: branchCodeNum,
+    });
+
+    if (!staffCheck.authenticated) {
+      return NextResponse.json(
+        { success: false, error: staffCheck.error || 'Unauthorized to confirm admissions.' },
+        { status: staffCheck.statusCode || 403 }
+      );
     }
 
     const result = confirmAdmission(body as ConfirmAdmissionInput);
