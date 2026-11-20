@@ -37,6 +37,13 @@ export default function AdminOverviewPage() {
 
         <div className="flex flex-wrap items-center gap-3">
           <Link
+            href="/admin/finances"
+            className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Financial Dashboard
+          </Link>
+          <Link
             href="/admin/admissions"
             className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
           >
@@ -53,7 +60,25 @@ export default function AdminOverviewPage() {
       </div>
 
       {/* Main Administrative Action Pillars */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <Link
+          href="/admin/finances"
+          className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"
+        >
+          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
+            <TrendingUp className="w-6 h-6" />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+            Finances & Ledgers
+          </h3>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Joining-date billing, advance credits, deposit escrow & offline collections.
+          </p>
+          <span className="text-xs font-bold text-amber-400 flex items-center gap-1 pt-1">
+            Open Finances <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </Link>
+
         <Link
           href="/admin/inventory"
           className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3 hover:border-amber-500/50 transition-all shadow-xl group"

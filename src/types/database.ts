@@ -7,6 +7,9 @@ export type BedStatus = 'vacant' | 'occupied' | 'reserved' | 'maintenance';
 export type ResidentStatus = 'active' | 'inactive' | 'suspended';
 export type ComplaintStatus = 'open' | 'in_progress' | 'resolved' | 'closed';
 export type ComplaintCategory = 'plumbing' | 'electrical' | 'wifi' | 'food' | 'cleaning' | 'noise' | 'other';
+export type BranchCode = 1 | 2 | 3 | 4 | 5;
+export type InvoiceStatus = 'draft' | 'unpaid' | 'partially_paid' | 'paid' | 'overdue' | 'cancelled';
+export type PaymentMethod = 'online_upi' | 'online_card' | 'online_razorpay' | 'cash' | 'direct_upi' | 'bank_transfer';
 
 export interface Branch {
   id: string;
@@ -161,7 +164,7 @@ export interface ResidentInvoice {
   invoice_number: string;
   resident_id: string;
   devi_resident_id: string;
-  branch_code: 1 | 2 | 3 | 4 | 5;
+  branch_code: BranchCode;
   billing_period_start: string;
   billing_period_end: string;
   rent_amount: number;
@@ -170,7 +173,7 @@ export interface ResidentInvoice {
   amount_paid: number;
   balance_due: number;
   due_date: string;
-  status: 'unpaid' | 'partially_paid' | 'paid' | 'overdue';
+  status: InvoiceStatus;
 }
 
 export interface ResidentPayment {
@@ -179,7 +182,7 @@ export interface ResidentPayment {
   resident_id: string;
   devi_resident_id: string;
   amount: number;
-  payment_method: 'online_upi' | 'online_card' | 'cash' | 'direct_upi' | 'bank_transfer';
+  payment_method: PaymentMethod;
   payment_date: string;
   transaction_reference: string;
   status: 'verified' | 'pending';
