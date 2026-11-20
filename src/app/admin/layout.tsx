@@ -5,24 +5,33 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
-  DollarSign,
-  TrendingUp,
-  CreditCard,
-  FileText,
-  ShieldCheck,
   Building2,
-  Users,
-  UserCheck,
-  ArrowRightLeft,
+  Layers,
+  Bed,
   Mail,
+  UserCheck,
+  Users,
+  FileText,
+  CreditCard,
+  Receipt,
+  Wallet,
+  ShieldCheck,
+  TrendingDown,
+  Scale,
+  Bell,
+  LifeBuoy,
+  UserPlus,
   PieChart,
+  Shield,
+  Settings,
+  History,
   LogOut,
   ChevronDown,
-  Plus,
-  Shield,
-  Receipt,
-  CheckCircle2
+  Menu,
+  X,
+  Plus
 } from 'lucide-react';
+import { VERIFIED_CONTACTS } from '@/lib/data/branches';
 
 export default function AdminPortalLayout({
   children,
@@ -31,8 +40,9 @@ export default function AdminPortalLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // If on admin login page, render children without portal chrome
+  // If on admin login page, render children cleanly without portal chrome
   if (pathname === '/admin/login') {
     return <>{children}</>;
   }
@@ -42,7 +52,6 @@ export default function AdminPortalLayout({
   const [activeBranch, setActiveBranch] = useState<string>('All 5 Branches');
 
   useEffect(() => {
-    // Read staff cookie or default to Owner
     const roleMatch = document.cookie.match(/devi_staff_role=([^;]+)/);
     const nameMatch = document.cookie.match(/devi_staff_name=([^;]+)/);
     const branchMatch = document.cookie.match(/devi_staff_branch=([^;]+)/);
@@ -70,20 +79,48 @@ export default function AdminPortalLayout({
     setActiveBranch(preset.branch);
   };
 
-  const navItems = [
-    { name: 'Overview', href: '/admin', icon: LayoutDashboard },
-    { name: 'Finances Overview', href: '/admin/finances', icon: TrendingUp },
-    { name: 'Rent Invoices', href: '/admin/finances/invoices', icon: FileText },
-    { name: 'Payments Ledger', href: '/admin/finances/payments', icon: CreditCard },
-    { name: 'Security Deposits', href: '/admin/finances/deposits', icon: ShieldCheck },
-    { name: 'Financial Reports', href: '/admin/finances/reports', icon: PieChart },
-    { name: 'Bed Inventory', href: '/admin/inventory', icon: Building2 },
-    { name: 'Residents', href: '/admin/residents', icon: Users },
-    { name: 'Admissions', href: '/admin/admissions', icon: UserCheck },
-    { name: 'Operations & Transfers', href: '/admin/operations', icon: ArrowRightLeft },
-    { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
-    { name: 'Staff & Roles', href: '/admin/staff', icon: Shield },
-    { name: 'Analytics & BI', href: '/admin/analytics', icon: PieChart },
+  const navGroups = [
+    {
+      group: 'Core Management',
+      items: [
+        { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+        { name: 'Branches', href: '/admin/branches', icon: Building2 },
+        { name: 'Floors & Rooms', href: '/admin/floors-rooms', icon: Layers },
+        { name: 'Beds & Vacancy', href: '/admin/inventory', icon: Bed },
+        { name: 'Enquiries', href: '/admin/enquiries', icon: Mail },
+        { name: 'Admissions', href: '/admin/admissions', icon: UserCheck },
+        { name: 'Residents', href: '/admin/residents', icon: Users },
+      ],
+    },
+    {
+      group: 'Transactions & Finance',
+      items: [
+        { name: 'Transactions Ledger', href: '/admin/finances/transactions', icon: Receipt },
+        { name: 'Invoices & Billing', href: '/admin/finances/invoices', icon: FileText },
+        { name: 'Payments Ledger', href: '/admin/finances/payments', icon: CreditCard },
+        { name: 'Advance Rent', href: '/admin/finances/advance', icon: Wallet },
+        { name: 'Security Deposits', href: '/admin/finances/deposits', icon: ShieldCheck },
+        { name: 'Branch Expenses', href: '/admin/finances/expenses', icon: TrendingDown },
+        { name: 'Cash Reconciliation', href: '/admin/finances/reconciliation', icon: Scale },
+        { name: 'Financial Reports', href: '/admin/finances/reports', icon: PieChart },
+      ],
+    },
+    {
+      group: 'Hostel Operations',
+      items: [
+        { name: 'Reminders & Tasks', href: '/admin/reminders', icon: Bell },
+        { name: 'Complaints', href: '/admin/complaints', icon: LifeBuoy },
+        { name: 'Visitor Passes', href: '/admin/visitors', icon: UserPlus },
+      ],
+    },
+    {
+      group: 'Administration',
+      items: [
+        { name: 'Staff & Roles', href: '/admin/staff', icon: Shield },
+        { name: 'Settings', href: '/admin/settings', icon: Settings },
+        { name: 'Audit Logs', href: '/admin/audit-logs', icon: History },
+      ],
+    },
   ];
 
   const isActive = (href: string) => {
@@ -92,123 +129,132 @@ export default function AdminPortalLayout({
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] text-[#0F172A] flex flex-col">
-      {/* Top Staff Navigation Header */}
-      <header className="bg-[#0F172A] text-white border-b border-[#1E293B] sticky top-0 z-50 shadow-md">
+    <div className="min-h-screen bg-[#F5F1E9] text-[#142B45] flex flex-col">
+      {/* Top Staff Header */}
+      <header className="bg-[#142B45] text-[#FFFFFF] border-b border-[#1F3C5F] sticky top-0 z-50 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between py-3 gap-3">
-            {/* Brand and Current Scope */}
+            {/* Mobile Sidebar Toggle & Brand */}
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="lg:hidden p-1.5 rounded-md text-[#E5E0D7] hover:bg-[#1F3C5F]"
+                aria-label="Toggle admin sidebar"
+              >
+                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+
               <Link href="/admin" className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-white text-[#0F172A] flex items-center justify-center font-serif font-black text-sm">
+                <div className="w-8 h-8 rounded-lg bg-[#FFFFFF] text-[#142B45] flex items-center justify-center font-serif font-black text-sm">
                   DM
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-serif text-base font-bold tracking-tight text-white">
-                      DEVI HOSTELS & DEVI MANSION
+                    <span className="font-serif text-base font-bold tracking-tight text-[#FFFFFF]">
+                      DEVI HOSTELS
                     </span>
-                    <span className="bg-amber-400 text-slate-950 font-mono text-[9px] font-bold px-1.5 py-0.5 rounded">
+                    <span className="bg-[#D6A85F] text-[#142B45] font-mono text-[9px] font-bold px-1.5 py-0.5 rounded">
                       MANAGEMENT ERP
                     </span>
                   </div>
-                  <p className="text-[10.5px] font-mono text-slate-400">
-                    Active: <strong className="text-white font-bold">{activeName}</strong> • <span className="text-amber-300">{activeBranch}</span>
+                  <p className="text-[10.5px] font-mono text-[#E5E0D7]/80">
+                    Active: <strong className="text-[#FFFFFF]">{activeName}</strong> • <span className="text-[#D6A85F]">{activeBranch}</span>
                   </p>
                 </div>
               </Link>
             </div>
 
-            {/* Role Switcher & Action CTA Buttons */}
+            {/* Quick Actions & Role Switcher */}
             <div className="flex items-center flex-wrap gap-2.5 self-start sm:self-auto">
-              {/* Role Switcher Dropdown */}
-              <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs">
-                <span className="text-slate-400 text-[11px] font-mono">Role:</span>
+              <div className="flex items-center gap-1.5 bg-[#1F3C5F] border border-[#142B45] rounded-lg px-2.5 py-1 text-xs">
+                <span className="text-[#E5E0D7] text-[11px] font-mono">Role:</span>
                 <select
                   value={staffRolePresets.find(p => p.name === activeName)?.role || 'owner'}
                   onChange={(e) => {
                     const preset = staffRolePresets.find(p => p.role === e.target.value);
                     if (preset) handleSwitchStaff(preset);
                   }}
-                  className="bg-transparent text-amber-300 font-bold text-xs focus:outline-none cursor-pointer"
+                  className="bg-transparent text-[#D6A85F] font-bold text-xs focus:outline-none cursor-pointer"
                 >
                   {staffRolePresets.map((p) => (
-                    <option key={p.role} value={p.role} className="bg-slate-900 text-white">
+                    <option key={p.role} value={p.role} className="bg-[#142B45] text-[#FFFFFF]">
                       {p.title} ({p.name})
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Fast Financial Action: Record Payment */}
               <Link
                 href="/admin/finances/payments"
                 className="btn-emerald-cta text-xs py-1.5 px-3 flex items-center gap-1.5"
-                title="Record Offline Cash or Direct UPI Collection"
               >
                 <CreditCard className="w-3.5 h-3.5" />
                 <span>Record Payment</span>
               </Link>
 
-              {/* Fast Operational Action: New Admission */}
               <Link
                 href="/admin/admissions"
-                className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono font-bold text-xs py-1.5 px-3 rounded-md transition-colors flex items-center gap-1"
-                title="Admit New Student or Airport Staff Resident"
+                className="btn-champagne-gold text-xs py-1.5 px-3 flex items-center gap-1"
               >
                 <UserCheck className="w-3.5 h-3.5" />
                 <span>New Admission</span>
               </Link>
 
-              {/* Sign Out to Login Portal */}
               <Link
                 href="/admin/login"
-                className="text-slate-400 hover:text-white p-1.5 rounded-md hover:bg-slate-800 transition-colors"
-                title="Sign Out / Switch Account"
+                className="text-[#E5E0D7] hover:text-[#FFFFFF] p-1.5 rounded-md hover:bg-[#1F3C5F] transition-colors"
+                title="Switch Account"
               >
                 <LogOut className="w-4 h-4" />
               </Link>
             </div>
           </div>
         </div>
-
-        {/* Primary Persistent Tab Bar */}
-        <div className="bg-[#1E293B]/90 border-t border-slate-700/60 overflow-x-auto scrollbar-none">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <nav className="flex items-center space-x-1 py-1.5">
-              {navItems.map((item) => {
-                const active = isActive(item.href);
-                const Icon = item.icon;
-                const isFinance = item.href.startsWith('/admin/finances');
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-all ${
-                      active
-                        ? 'bg-amber-400 text-slate-950 font-bold shadow-sm'
-                        : isFinance
-                        ? 'text-emerald-300 hover:text-white hover:bg-slate-800/80'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{item.name}</span>
-                    {isFinance && !active && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    )}
-                  </Link>
-                );
-              })}
-            </nav>
-          </div>
-        </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
+      {/* Main Container with Full Responsive Sidebar */}
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 flex gap-6">
+        {/* Desktop Sidebar (and Drawer on Mobile) */}
+        <aside
+          className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#FFFFFF] border-r border-[#E5E0D7] p-4 overflow-y-auto transition-transform duration-200 lg:static lg:block lg:w-64 lg:rounded-xl lg:border lg:shadow-xs lg:overflow-visible ${
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+          }`}
+        >
+          <div className="space-y-6">
+            {navGroups.map((group) => (
+              <div key={group.group} className="space-y-1">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#718096] px-2.5 pb-1">
+                  {group.group}
+                </p>
+                {group.items.map((item) => {
+                  const active = isActive(item.href);
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                        active
+                          ? 'bg-[#142B45] text-[#FFFFFF] font-bold shadow-xs'
+                          : 'text-[#263447] hover:bg-[#F5F1E9] hover:text-[#142B45]'
+                      }`}
+                    >
+                      <Icon className={`w-4 h-4 ${active ? 'text-[#D6A85F]' : 'text-[#718096]'}`} />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </aside>
+
+        {/* Content Area */}
+        <main className="flex-1 min-w-0">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

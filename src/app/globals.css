@@ -1,19 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAFAF9;
-  --foreground: #1E293B;
-  --color-primary-ink: #0F172A;
-  --color-accent-blue: #365679;
-  --color-aurora-purple: #6957F5;
-  --color-aurora-blue: #4285F4;
-  --color-aurora-cyan: #39BBD5;
-  --color-aurora-lavender: #F0EEFF;
-  
-  --glass-card: rgba(255, 255, 255, 0.94);
-  --glass-card-border: rgba(226, 232, 240, 0.9);
-  --glass-card-ring: rgba(226, 232, 240, 0.7);
-  --glass-card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.02);
+  --background: #F5F1E9;
+  --foreground: #263447;
+  --color-primary-navy: #142B45;
+  --color-champagne-gold: #D6A85F;
+  --color-warm-ivory: #F5F1E9;
+  --color-muted-emerald: #477B70;
+  --color-white: #FFFFFF;
+  --color-slate-charcoal: #263447;
+  --color-muted-text: #718096;
+  --color-border: #E5E0D7;
 }
 
 @theme inline {
@@ -34,11 +31,10 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif), Georgia, serif;
-  color: #0F172A;
-  letter-spacing: -0.025em;
+  color: #142B45;
+  letter-spacing: -0.02em;
 }
 
-/* Monospace Utilities & Buttons matching IDM Inky */
 .font-mono {
   font-family: var(--font-mono), monospace;
 }
@@ -51,43 +47,46 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans), sans-serif;
 }
 
-/* Primary Ink Button */
-.btn-primary-ink {
-  background-color: #0F172A;
+/* Primary Navy Button */
+.btn-primary-ink,
+.btn-primary-navy {
+  background-color: #142B45;
   color: #FFFFFF;
   padding: 0.65rem 1.25rem;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.6875rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 700;
-  border: 1px solid #1E293B;
-  border-radius: 0.375rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 14px 0 rgba(15, 23, 42, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: all 0.2s ease;
-}
-
-.btn-primary-ink:hover {
-  background-color: #1E293B;
-  box-shadow: 0 6px 20px 0 rgba(15, 23, 42, 0.3);
-  transform: translateY(-1px);
-}
-
-/* Emerald WhatsApp & Verified Action Button */
-.btn-emerald-cta {
-  border: 2px solid #059669;
-  background-color: #ECFDF5;
-  color: #022C22;
-  padding: 0.55rem 1.15rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 700;
+  border: 1px solid #142B45;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 6px rgba(20, 43, 69, 0.15);
+  transition: all 0.2s ease;
+}
+
+.btn-primary-ink:hover,
+.btn-primary-navy:hover {
+  background-color: #1F3C5F;
+  border-color: #1F3C5F;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(20, 43, 69, 0.25);
+}
+
+/* Champagne Gold Accent Button */
+.btn-champagne-gold {
+  background-color: #D6A85F;
+  color: #142B45;
+  padding: 0.65rem 1.25rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border: 1px solid #C4964D;
   border-radius: 0.375rem;
   display: inline-flex;
   align-items: center;
@@ -96,22 +95,47 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.2s ease;
 }
 
-.btn-emerald-cta:hover {
-  background-color: #059669;
+.btn-champagne-gold:hover {
+  background-color: #C4964D;
+  transform: translateY(-1px);
+}
+
+/* Muted Emerald WhatsApp & Verified Action Button */
+.btn-emerald-cta,
+.btn-muted-emerald {
+  border: 1px solid #477B70;
+  background-color: #FFFFFF;
+  color: #477B70;
+  padding: 0.55rem 1.15rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-emerald-cta:hover,
+.btn-muted-emerald:hover {
+  background-color: #477B70;
   color: #FFFFFF;
-  box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.25);
   transform: translateY(-1px);
 }
 
 /* Ghost Luxury Button */
 .btn-ghost-luxury {
-  border: 2px solid #CBD5E1;
-  background-color: rgba(255, 255, 255, 0.95);
-  color: #0F172A;
+  border: 1px solid #E5E0D7;
+  background-color: #FFFFFF;
+  color: #142B45;
   padding: 0.55rem 1.15rem;
   font-family: var(--font-mono), monospace;
   font-size: 0.6875rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 0.375rem;
@@ -123,8 +147,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-ghost-luxury:hover {
-  background-color: #F1F5F9;
-  border-color: #94A3B8;
+  background-color: #F5F1E9;
+  border-color: #D6A85F;
   transform: translateY(-1px);
 }
 
@@ -132,44 +156,32 @@ h1, h2, h3, h4, h5, h6 {
 .badge-mono {
   font-family: var(--font-mono), monospace;
   font-size: 0.625rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 700;
-  padding: 0.25rem 0.65rem;
+  padding: 0.25rem 0.6rem;
   border-radius: 0.25rem;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  border: 1.5px solid #CBD5E1;
+  border: 1px solid #E5E0D7;
   background-color: #FFFFFF;
-  color: #0F172A;
+  color: #142B45;
 }
 
-/* Glass Card */
-.card-glass {
-  background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  border-radius: 0.875rem;
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
-  transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
-}
-
-.card-glass:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08);
-}
-
-/* High-Contrast Editorial Card */
+/* Card Styling: Premium Calm Ivory & White */
+.card-glass,
 .card-editorial {
   background-color: #FFFFFF;
-  border: 2px solid #0F172A;
-  border-radius: 0.5rem;
-  box-shadow: 4px 4px 0px 0px #0F172A;
-  transition: all 0.2s ease;
+  border: 1px solid #E5E0D7;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(20, 43, 69, 0.04), 0 4px 12px rgba(20, 43, 69, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+.card-glass:hover,
 .card-editorial:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px 0px #0F172A;
+  border-color: #D6A85F;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(20, 43, 69, 0.06);
 }

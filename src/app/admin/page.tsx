@@ -72,7 +72,7 @@ export default function AdminOverviewPage() {
               </h2>
             </div>
             <p className="text-xs text-[#64748B]">
-              Centralized joining-date billing engine, cash/UPI counter recording, advance rent credits & deposit escrow.
+              Centralized joining-date billing engine, cash/UPI counter recording, advance rent credits & refundable deposits.
             </p>
           </div>
 
@@ -157,11 +157,11 @@ export default function AdminOverviewPage() {
                 Security Deposits
               </h3>
               <p className="text-[11px] text-[#64748B] mt-1 leading-relaxed">
-                Segregated deposit escrow accounts, checkout damage deductions & refundable payouts.
+                Segregated deposit liability accounts, checkout damage deductions & refundable payouts.
               </p>
             </div>
             <span className="text-[11px] font-mono font-bold text-[#365679] flex items-center gap-1 pt-1">
-              Deposit Escrow →
+              Deposit Ledger →
             </span>
           </Link>
 

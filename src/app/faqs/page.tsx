@@ -1,54 +1,55 @@
 import React from 'react';
 import Link from 'next/link';
 import { HelpCircle, ArrowRight, Phone } from 'lucide-react';
+import { VERIFIED_CONTACTS } from '@/lib/data/branches';
 
 export default function FaqsPage() {
   const faqs = [
     {
-      q: 'What is the exact address of DEVI HOSTELS in Shamshabad?',
-      a: 'DEVI HOSTELS operates five centralized branches in Shamshabad, Hyderabad (Pin 501218). Our administrative hub is situated opposite HP Petrol Bunk on the Main Airport Approach Road, just 4 to 8 minutes away from Rajiv Gandhi International Airport (RGIA).',
+      q: 'What is the location of DEVI HOSTELS in Shamshabad?',
+      a: `DEVI HOSTELS operates five centralized branches in Shamshabad, Hyderabad. Our flagship building, DEVI MANSION (The Boys Town), is located at ${VERIFIED_CONTACTS.flagship_address}, minutes away from Rajiv Gandhi International Airport (RGIA). For exact GPS pins and visits to our other branches, please contact management.`,
     },
     {
-      q: 'What is the DEVI Resident ID and how is it formatted?',
-      a: 'Every admitted resident receives a permanent unique Resident ID in the mandatory format: DV[BRANCH_CODE]-[FLOOR_NUMBER]-[UNIQUE_NUMBER] (e.g. DV1-1-00001, DV5-2-00045). This ID remains permanently tied to your profile even if you later change rooms or branches.',
+      q: 'What is the DEVI Resident ID format?',
+      a: 'Every admitted resident receives a permanent unique Resident ID in the standardized format: DV[BRANCH_CODE]-[FLOOR_NUMBER]-[UNIQUE_NUMBER]. This ID remains permanently tied to your profile across stays, even if you change rooms or branches.',
     },
     {
-      q: 'Is DEVI Hostels suitable for RGIA airport employees on rotational shifts?',
-      a: 'Yes, absolutely. Our Branch 2 and Branch 5 are specially optimized for airport shift staff (IndiGo, Air India, AISATS, Çelebi, GMR). They feature 24/7 biometric check-in/entry, flexible warm food timings, and daytime quiet hours for rotational sleep.',
+      q: 'Is DEVI Hostels suitable for RGIA airport professionals on rotational shifts?',
+      a: 'Yes, absolutely. Our branches are configured to accommodate airport shift professionals (IndiGo, Air India, AISATS, Çelebi, GMR) with 24/7 biometric check-in, flexible warm food, and quiet daytime hours for restful sleep between rotational shifts.',
     },
     {
       q: 'Is there a dedicated Girls Hostel branch?',
-      a: 'Yes! Branch 5 (Girls Hostel Branch 1) is a 5-floor high-security dedicated girls property with female wardens, biometric access, 24/7 CCTV surveillance, and female security guards.',
+      a: 'Yes. Branch 5 (Girls Hostel Branch 1) is a dedicated accommodation facility featuring resident lady wardens, biometric access, 24/7 CCTV surveillance, and strict visitor verification protocols.',
     },
     {
       q: 'What facilities are included in the monthly rent?',
-      a: 'Monthly rent includes 3-times daily freshly prepared South & North Indian meals, unlimited high-speed Wi-Fi, daily room housekeeping, hot water geysers, 24/7 power backup, automatic washing machines, and purified RO drinking water.',
+      a: 'Monthly rent includes 3-times daily freshly prepared South & North Indian meals, unlimited high-speed fiber Wi-Fi, daily room housekeeping, hot water geysers, power backup, washing machines, and purified RO mineral drinking water.',
     },
     {
-      q: 'How does the monthly billing cycle work?',
-      a: 'DEVI HOSTELS follows a fair individual joining-date billing engine. If you join on November 15, your monthly invoice runs from November 15 to December 14, and subsequent cycles follow your joining date without pro-ration penalties.',
+      q: 'How does the individual joining-date billing engine work?',
+      a: 'DEVI HOSTELS follows an individual joining-date billing cycle. If your confirmed admission begins on the 15th, your billing cycle runs from the 15th of each month to the 14th of the next month, without pro-ration penalties.',
     },
     {
       q: 'How can I pay my rent?',
-      a: 'You can pay online via UPI (Google Pay, PhonePe, Paytm), debit/credit cards, or net banking directly through the DEVI Resident Portal. You may also pay cash or direct bank transfer to our management desk.',
+      a: 'Residents can pay online via UPI (Google Pay, PhonePe, Paytm), debit/credit cards, or net banking directly through the secure DEVI Resident Portal. You may also record counter cash or direct UPI at the management desk.',
     },
     {
-      q: 'How do I book a room or schedule a visit?',
-      a: 'You can fill out our online multi-step admission enquiry form on this website, or call Owner Marpina Pradeep directly at +91 98480 12345.',
+      q: 'How do I submit an enquiry or visit the hostels?',
+      a: `You can complete our online admission enquiry form on this website or call management directly at ${VERIFIED_CONTACTS.primary_phone} or ${VERIFIED_CONTACTS.secondary_phone}.`,
     },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
-      <div className="text-center space-y-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
-          Got Questions?
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-10 bg-[#F5F1E9]">
+      <div className="text-center space-y-3">
+        <span className="badge-mono border-[#D6A85F] text-[#142B45]">
+          FREQUENTLY ASKED QUESTIONS
         </span>
-        <h1 className="text-4xl sm:text-5xl font-black text-white">
-          Frequently Asked Questions
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#142B45]">
+          Got Questions?
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Common queries regarding admission, branches, dining, safety, and resident policies at DEVI HOSTELS, Shamshabad.
+        <p className="text-[#263447] text-sm leading-relaxed max-w-xl mx-auto">
+          Common queries regarding admissions, branches, dining, security, and resident policies at DEVI HOSTELS, Shamshabad.
         </p>
       </div>
 
@@ -56,38 +57,36 @@ export default function FaqsPage() {
         {faqs.map((faq, idx) => (
           <div
             key={idx}
-            className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-2.5 shadow-lg"
+            className="card-editorial p-6 space-y-2 bg-[#FFFFFF] border border-[#E5E0D7]"
           >
-            <h3 className="text-base font-bold text-white flex items-start gap-2.5">
-              <span className="font-mono text-xs font-bold text-amber-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 shrink-0 mt-0.5">
-                Q{idx + 1}
-              </span>
+            <h3 className="font-serif text-base font-bold text-[#142B45] flex items-start gap-2">
+              <HelpCircle className="w-4 h-4 text-[#D6A85F] shrink-0 mt-0.5" />
               <span>{faq.q}</span>
             </h3>
-            <p className="text-xs sm:text-sm text-slate-300 pl-8 leading-relaxed">
+            <p className="text-xs text-[#263447] pl-6 leading-relaxed">
               {faq.a}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 text-center space-y-4">
-        <h3 className="text-xl font-bold text-white">Still have questions?</h3>
-        <p className="text-xs text-slate-400">
-          Speak with our proprietor <strong>Marpina Pradeep</strong> directly or start your online enquiry.
+      <div className="card-editorial p-8 text-center bg-[#FFFFFF] border border-[#E5E0D7] space-y-4">
+        <h3 className="font-serif text-lg font-bold text-[#142B45]">
+          Still have a question?
+        </h3>
+        <p className="text-xs text-[#718096]">
+          Contact management directly for instant assistance regarding vacancies and tariffs.
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Link
-            href="/enquiry"
-            className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md"
-          >
-            Submit Enquiry
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <Link href="/enquiry" className="btn-primary-navy text-xs py-2.5 px-6">
+            Admission Enquiry
           </Link>
           <a
-            href="tel:+919848012345"
-            className="px-6 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-xs border border-slate-700"
+            href={`tel:${VERIFIED_CONTACTS.primary_phone}`}
+            className="btn-ghost-luxury text-xs py-2.5 px-6 flex items-center gap-1.5"
           >
-            Call: +91 98480 12345
+            <Phone className="w-3.5 h-3.5 text-[#477B70]" />
+            <span>Call {VERIFIED_CONTACTS.primary_phone}</span>
           </a>
         </div>
       </div>

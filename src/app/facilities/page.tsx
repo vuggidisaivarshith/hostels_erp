@@ -8,10 +8,10 @@ import {
   Droplets,
   Sparkles,
   Shirt,
-  Tv,
   BookOpen,
   ArrowRight,
-  CheckCircle2
+  Dumbbell,
+  Car
 } from 'lucide-react';
 
 export default function FacilitiesPage() {
@@ -24,74 +24,79 @@ export default function FacilitiesPage() {
     {
       icon: Wifi,
       title: 'High-Speed Unlimited Fiber Wi-Fi',
-      desc: '100 Mbps+ enterprise dual-band mesh Wi-Fi network covering every room, corridor, and dining space for uninterrupted work and study.',
+      desc: 'High-speed dual-band Wi-Fi network covering rooms, corridors, and dining spaces for uninterrupted work, video calls, and study.',
+    },
+    {
+      icon: Dumbbell,
+      title: 'Free On-Site Fitness Gym (Devi Mansion)',
+      desc: 'Dedicated fitness gym at our flagship building Devi Mansion equipped with weights and cardio gear for healthy active resident living.',
+    },
+    {
+      icon: Car,
+      title: 'Dedicated Vehicle Parking',
+      desc: 'Safe, covered on-site parking for bikes and two-wheelers, plus designated car parking spaces at flagship branch.',
     },
     {
       icon: ShieldCheck,
       title: '24/7 Biometric Security & CCTV',
-      desc: 'High-definition cameras recording all corridors and entrance gates, biometric access, and police-verified wardens for complete safety.',
+      desc: 'CCTV surveillance recording corridors and entrance gates, biometric access controls, and resident wardens.',
     },
     {
       icon: Zap,
       title: 'Inverter & Generator Power Backup',
-      desc: 'Heavy-duty power backup ensuring fans, lights, Wi-Fi routers, and charging sockets stay active during municipal power cuts.',
+      desc: 'Power backup ensuring fans, lighting, Wi-Fi routers, and charging sockets remain active during power interruptions.',
     },
     {
       icon: Droplets,
       title: '24/7 Water & Hot Water Geysers',
-      desc: 'Uninterrupted municipal water supply paired with instant bathroom geysers and solar water heating systems for all seasons.',
+      desc: 'Continuous water supply paired with individual bathroom geysers for hot water across all seasons.',
     },
     {
       icon: Shirt,
       title: 'Automatic Washing Machines',
-      desc: 'Dedicated laundry zones with high-capacity automatic washing machines and spacious, sunlit covered drying balconies.',
-    },
-    {
-      icon: Sparkles,
-      title: 'Daily Housekeeping & Sanitization',
-      desc: 'Professional daily cleaning of resident rooms, daily bathroom disinfection, garbage clearance, and corridor sweeping.',
+      desc: 'Dedicated laundry areas with high-capacity automatic washing machines and spacious covered drying balconies.',
     },
     {
       icon: Droplets,
       title: 'Multi-Stage RO Drinking Water',
-      desc: 'Commercial Reverse Osmosis (RO) water purification plants with mineral enhancement dispensers installed on every floor.',
+      desc: 'Reverse Osmosis (RO) water purification units with mineral enrichment dispensers installed on every floor.',
     },
     {
       icon: BookOpen,
       title: 'Individual Wardrobes & Study Desks',
-      desc: 'Lockable steel wardrobes, personal study desks, ergonomic chairs, and bedside mobile charging points for every resident.',
+      desc: 'Lockable steel wardrobes, personal study desks, ergonomic chairs, and bedside charging points for every resident.',
     },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16">
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
-          All-Inclusive Amenities
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16 bg-[#F5F1E9]">
+      <div className="text-center max-w-3xl mx-auto space-y-3">
+        <span className="badge-mono border-[#D6A85F] text-[#142B45]">
+          ALL-INCLUSIVE AMENITIES
         </span>
-        <h1 className="text-4xl sm:text-5xl font-black text-white">
-          World-Class Hostel Facilities at DEVI HOSTELS
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#142B45]">
+          Hostel Amenities at DEVI HOSTELS
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Everything you need for a comfortable, stress-free stay in Shamshabad. No hidden electricity bills, no separate food surcharges.
+        <p className="text-[#263447] text-sm sm:text-base leading-relaxed">
+          Everything you need for a comfortable, stress-free stay in Shamshabad near RGIA.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {masterFacilities.map((fac, idx) => {
           const Icon = fac.icon;
           return (
             <div
               key={idx}
-              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-4 hover:border-amber-500/40 transition-all shadow-xl group"
+              className="card-editorial p-6 sm:p-8 space-y-3 bg-[#FFFFFF] border border-[#E5E0D7] group"
             >
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-                <Icon className="w-6 h-6" />
+              <div className="w-12 h-12 rounded-xl bg-[#F5F1E9] text-[#142B45] flex items-center justify-center font-bold group-hover:scale-105 transition-transform">
+                <Icon className="w-6 h-6 text-[#D6A85F]" />
               </div>
-              <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">
+              <h3 className="font-serif text-lg font-bold text-[#142B45]">
                 {fac.title}
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-[#718096] leading-relaxed">
                 {fac.desc}
               </p>
             </div>
@@ -100,18 +105,19 @@ export default function FacilitiesPage() {
       </div>
 
       {/* CTA */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-10 text-center space-y-6">
-        <h3 className="text-2xl font-bold text-white">
-          Experience the DEVI Hostels Hospitality in Person
-        </h3>
-        <p className="text-sm text-slate-400 max-w-xl mx-auto">
-          Visit any of our 5 branches in Shamshabad today to tour the rooms, taste our food, and inspect the amenities.
+      <div className="card-editorial p-8 sm:p-10 text-center space-y-4 bg-[#FFFFFF] border border-[#E5E0D7]">
+        <h2 className="font-serif text-2xl font-bold text-[#142B45]">
+          Experience DEVI Hostels in Person
+        </h2>
+        <p className="text-xs text-[#718096] max-w-xl mx-auto">
+          Visit our flagship campus Devi Mansion in Shamshabad to inspect the rooms, gym, and dining hall.
         </p>
         <Link
           href="/enquiry"
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-xl transition-all"
+          className="btn-primary-navy py-3 px-8 text-xs inline-flex items-center gap-2"
         >
-          Book a Free Room Tour <ArrowRight className="w-4 h-4" />
+          <span>Submit Admission Enquiry</span>
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>

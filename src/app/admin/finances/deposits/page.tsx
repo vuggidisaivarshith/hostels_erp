@@ -89,85 +89,118 @@ export default function AdminDepositsPage() {
     }
   };
 
+  const totalHeld = residents.reduce((acc, r) => acc + (r.security_deposit || 0), 0);
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E0D7] pb-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/30">
-            Escrow Liability Management
+          <span className="badge-mono border-[#D6A85F] text-[#142B45]">
+            DEPOSIT LIABILITY MANAGEMENT
           </span>
-          <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
-            Refundable Security Deposit Ledger
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#142B45] mt-1">
+            Refundable Security Deposits
           </h1>
-          <p className="text-xs text-slate-400">
-            Track refundable deposits held in escrow, room damage deductions, and checkout refunds.
+          <p className="text-xs text-[#718096]">
+            Track refundable deposits held against resident stays, room damage deductions, and checkout refunds.
           </p>
         </div>
 
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center gap-1.5"
+          className="btn-primary-navy text-xs py-2 px-4 flex items-center gap-1.5 self-start sm:self-auto"
         >
-          <Plus className="w-4 h-4" /> Record Deduction / Refund
+          <Plus className="w-3.5 h-3.5" />
+          <span>Record Deduction / Refund</span>
         </button>
       </div>
 
       {feedback && (
-        <div className={`p-4 rounded-xl text-xs font-semibold ${
+        <div className={`p-4 rounded-lg text-xs font-semibold ${
           feedback.type === 'success'
-            ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
-            : 'bg-rose-500/10 border border-rose-500/30 text-rose-300'
+            ? 'bg-[#EBF2F0] border border-[#A3C7BD] text-[#1D4038]'
+            : 'bg-[#FDF2F2] border border-[#F8B4B4] text-[#9B1C1C]'
         }`}>
           {feedback.text}
         </div>
       )}
 
-      {/* Modal */}
+      {/* Metrics Banner */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="card-editorial p-5 bg-[#FFFFFF] border border-[#E5E0D7]">
+          <span className="badge-mono text-[9px] border-[#D6A85F]">TOTAL DEPOSITS HELD</span>
+          <p className="font-serif text-3xl font-bold text-[#477B70] font-mono mt-1">
+            ₹{totalHeld.toLocaleString()}
+          </p>
+          <p className="text-[11px] text-[#718096] mt-0.5">Segregated refundable liability</p>
+        </div>
+        <div className="card-editorial p-5 bg-[#FFFFFF] border border-[#E5E0D7]">
+          <span className="badge-mono text-[9px] border-[#D6A85F]">ACTIVE RESIDENTS</span>
+          <p className="font-serif text-3xl font-bold text-[#142B45] font-mono mt-1">
+            {residents.length} Residents
+          </p>
+          <p className="text-[11px] text-[#718096] mt-0.5">With active security deposit</p>
+        </div>
+        <div className="card-editorial p-5 bg-[#FFFFFF] border border-[#E5E0D7]">
+          <span className="badge-mono text-[9px] border-[#D6A85F]">REFUND PROTOCOL</span>
+          <p className="font-serif text-sm font-bold text-[#142B45] mt-1">15-Day Notice Checkout</p>
+          <p className="text-[11px] text-[#718096] mt-0.5">Disbursed upon clear room inspection</p>
+        </div>
+      </div>
+
+      {/* Action Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 shadow-2xl">
-            <h3 className="text-xl font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-amber-500" />
-              Deposit Deduction or Refund
-            </h3>
+        <div className="fixed inset-0 z-50 bg-[#142B45]/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="card-editorial max-w-lg w-full p-6 bg-[#FFFFFF] border border-[#E5E0D7] shadow-xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#E5E0D7] pb-3">
+              <h3 className="font-serif text-lg font-bold text-[#142B45]">
+                Process Security Deposit Deduction / Refund
+              </h3>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-xs font-mono text-[#718096] hover:text-[#142B45]"
+              >
+                Cancel ✕
+              </button>
+            </div>
 
             <form onSubmit={handleRecordDepositAction} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                <label className="block text-[11px] font-mono font-bold uppercase text-[#142B45] mb-1">
                   Select Resident *
                 </label>
                 <select
                   value={residentId}
                   onChange={(e) => setResidentId(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                  className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-2.5 py-2 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                 >
                   {residents.map((r) => (
                     <option key={r.id} value={r.id}>
-                      {r.resident_id} — {r.full_name} (Current Deposit: ₹{r.security_deposit.toLocaleString()})
+                      {r.full_name} ({r.resident_id}) — Branch {r.current_branch_code} (Balance: ₹{r.security_deposit})
                     </option>
                   ))}
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-mono font-bold uppercase text-[#142B45] mb-1">
                     Action Type *
                   </label>
                   <select
                     value={type}
                     onChange={(e) => setType(e.target.value as any)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-2.5 py-2 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                   >
-                    <option value="damage_deduction">Room Damage Deduction</option>
-                    <option value="utility_deduction">Electricity/Utility Clearance</option>
-                    <option value="refund">Checkout Security Refund</option>
+                    <option value="damage_deduction">Damage Deduction</option>
+                    <option value="utility_deduction">Utility / Key Loss Deduction</option>
+                    <option value="refund">Checkout Payout Refund</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  <label className="block text-[11px] font-mono font-bold uppercase text-[#142B45] mb-1">
                     Amount (INR) *
                   </label>
                   <input
@@ -175,40 +208,40 @@ export default function AdminDepositsPage() {
                     required
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    placeholder="e.g. 1500"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-amber-500 font-mono font-bold"
+                    placeholder="e.g. 500"
+                    className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3 py-2 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Justification / Inspection Remarks *
+                <label className="block text-[11px] font-mono font-bold uppercase text-[#142B45] mb-1">
+                  Audit Remarks / Deduction Reason *
                 </label>
-                <textarea
-                  rows={3}
+                <input
+                  type="text"
                   required
                   value={remarks}
                   onChange={(e) => setRemarks(e.target.value)}
-                  placeholder="e.g. Key replacement cost, wall repainting, or bank transfer UTR for final refund..."
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-amber-500"
+                  placeholder="e.g. Broken window latch repair or Checkout settlement to bank"
+                  className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3 py-2 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-2">
+              <div className="pt-2 flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-slate-700"
+                  className="btn-ghost-luxury text-xs py-2 px-4"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold shadow-md"
+                  className="btn-primary-navy text-xs py-2 px-5"
                 >
-                  {submitting ? 'Processing...' : 'Confirm Deposit Entry'}
+                  {submitting ? 'Processing...' : 'Confirm Action'}
                 </button>
               </div>
             </form>
@@ -216,67 +249,69 @@ export default function AdminDepositsPage() {
         </div>
       )}
 
-      {/* Ledger Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
-        <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-300">
-            Deposit Transactions ({entries.length})
-          </span>
-          <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> Escrow Tracked
-          </span>
-        </div>
-
-        {loading ? (
-          <div className="p-12 text-center text-xs text-slate-500">
-            Loading deposit transactions...
-          </div>
-        ) : entries.length === 0 ? (
-          <div className="p-12 text-center text-xs text-slate-500">
-            No deposit transactions found.
-          </div>
-        ) : (
-          <div className="divide-y divide-slate-800">
-            {entries.map((d) => (
-              <div
-                key={d.id}
-                className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-850 transition-colors"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                      {d.devi_resident_id}
-                    </span>
-                    <span className="text-sm font-bold text-white">{d.resident_name}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
-                      d.type === 'deposit_received'
-                        ? 'bg-emerald-500/20 text-emerald-300'
-                        : d.type === 'refund'
-                        ? 'bg-blue-500/20 text-blue-300'
-                        : 'bg-rose-500/20 text-rose-300'
+      {/* Deposits Table */}
+      <div className="card-editorial overflow-hidden bg-[#FFFFFF] border border-[#E5E0D7]">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr className="bg-[#142B45] text-[#FFFFFF] font-mono text-[10px] uppercase tracking-wider">
+                <th className="py-3 px-4">Entry ID</th>
+                <th className="py-3 px-4">Date</th>
+                <th className="py-3 px-4">Resident</th>
+                <th className="py-3 px-4">Action Type</th>
+                <th className="py-3 px-4 text-right">Amount</th>
+                <th className="py-3 px-4 text-right">Balance After</th>
+                <th className="py-3 px-4">Remarks</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#E5E0D7] text-[#263447]">
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-[#718096] font-mono">
+                    Loading security deposit entries...
+                  </td>
+                </tr>
+              ) : entries.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-[#718096] font-mono">
+                    No security deposit records found.
+                  </td>
+                </tr>
+              ) : (
+                entries.map((dep) => (
+                  <tr key={dep.id} className="hover:bg-[#F5F1E9]/40 transition-colors">
+                    <td className="py-3 px-4 font-mono font-bold text-[#142B45]">{dep.id}</td>
+                    <td className="py-3 px-4 font-mono text-[#718096]">{dep.date}</td>
+                    <td className="py-3 px-4">
+                      <p className="font-bold text-[#142B45]">{dep.resident_name}</p>
+                      <p className="font-mono text-[10px] text-[#718096]">{dep.devi_resident_id}</p>
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-mono font-bold capitalize ${
+                        dep.type === 'deposit_received'
+                          ? 'bg-[#EBF2F0] text-[#1D4038]'
+                          : dep.type === 'refund'
+                          ? 'bg-[#FDF6F0] text-[#9C4221]'
+                          : 'bg-[#FDF2F2] text-[#9B1C1C]'
+                      }`}>
+                        {dep.type.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td className={`py-3 px-4 text-right font-mono font-bold ${
+                      dep.type === 'deposit_received' ? 'text-[#477B70]' : 'text-[#9B1C1C]'
                     }`}>
-                      {d.type.replace('_', ' ')}
-                    </span>
-                  </div>
-
-                  <p className="text-xs text-slate-400">Date: {d.date}</p>
-                  <p className="text-[11px] text-slate-300 italic">&quot;{d.remarks}&quot;</p>
-                </div>
-
-                <div className="text-right space-y-0.5">
-                  <p className={`text-lg font-black font-mono ${
-                    d.type === 'deposit_received' ? 'text-emerald-400' : 'text-rose-400'
-                  }`}>
-                    {d.type === 'deposit_received' ? '+' : '-'}₹{d.amount.toLocaleString()}
-                  </p>
-                  <p className="text-[10px] text-slate-400">
-                    Deposit Balance After: <strong className="text-white font-mono">₹{d.balance_after.toLocaleString()}</strong>
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+                      {dep.type === 'deposit_received' ? '+' : '-'}₹{dep.amount.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 text-right font-mono font-bold text-[#142B45]">
+                      ₹{dep.balance_after.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 text-[#718096]">{dep.remarks}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

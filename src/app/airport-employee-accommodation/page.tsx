@@ -1,100 +1,81 @@
 import React from 'react';
 import Link from 'next/link';
-import { Plane, Clock, ShieldCheck, Moon, Shirt, Building2, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Plane, Clock, ShieldCheck, Moon, Utensils, CheckCircle2, ArrowRight } from 'lucide-react';
 import { DEVI_BRANCHES } from '@/lib/data/branches';
+import BranchCard from '@/components/ui/BranchCard';
 
-export default function AirportEmployeeAccommodationPage() {
+export default function AirportAccommodationPage() {
+  const airportBranches = DEVI_BRANCHES.filter(
+    (b) => b.branch_code === 1 || b.branch_code === 2 || b.branch_code === 5
+  );
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16 bg-[#F5F1E9]">
       {/* Hero */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/30">
-          RGIA Airport Proximity • 4-8 Minutes
+      <div className="text-center max-w-3xl mx-auto space-y-3">
+        <span className="badge-mono border-[#D6A85F] text-[#142B45]">
+          RGIA AVIATION & AIRPORT STAFF QUARTERS
         </span>
-        <h1 className="text-4xl sm:text-5xl font-black text-white">
-          Aviation & Airport Shift Staff Accommodation
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#142B45]">
+          Airport Employee Accommodation in Shamshabad
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Engineered for airline crew, ground handling staff (AISATS, Çelebi), cargo technicians, security, and GMR airport employees in Shamshabad. 24/7 entry, shift-friendly quiet zones, and laundry.
+        <p className="text-[#263447] text-sm sm:text-base leading-relaxed">
+          Engineered for aviation ground handling personnel, cabin crew, security officers, and airport operations staff working rotational shifts at Rajiv Gandhi International Airport.
         </p>
       </div>
 
-      {/* Airport Shift Features */}
+      {/* Pillars */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <Clock className="w-8 h-8 text-blue-400" />
-          <h3 className="text-base font-bold text-white">24/7 Biometric Access</h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Arrive or depart at any hour for early morning flight turnarounds or late-night cargo shifts with round-the-clock security.
+        <div className="card-editorial p-6 bg-[#FFFFFF] border border-[#E5E0D7] space-y-3">
+          <Clock className="w-7 h-7 text-[#D6A85F]" />
+          <h3 className="font-serif text-base font-bold text-[#142B45]">24/7 Biometric Entry</h3>
+          <p className="text-xs text-[#718096] leading-relaxed">
+            Arrive safely at any hour. Unrestricted entry for verified residents on early morning or night shifts.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <Moon className="w-8 h-8 text-blue-400" />
-          <h3 className="text-base font-bold text-white">Quiet Sleeping Zones</h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Curfew on noise during daytime hours in dedicated shift rooms so rotational night-shift workers sleep undisturbed.
+        <div className="card-editorial p-6 bg-[#FFFFFF] border border-[#E5E0D7] space-y-3">
+          <Moon className="w-7 h-7 text-[#D6A85F]" />
+          <h3 className="font-serif text-base font-bold text-[#142B45]">Quiet Day Hours</h3>
+          <p className="text-xs text-[#718096] leading-relaxed">
+            Daytime quiet-hours protocol ensuring deep, undisturbed rest after arduous night shifts.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <Shirt className="w-8 h-8 text-blue-400" />
-          <h3 className="text-base font-bold text-white">Uniform Laundry & Iron</h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Commercial automatic washing machines and steam iron points to maintain crisp airline uniforms and badges.
+        <div className="card-editorial p-6 bg-[#FFFFFF] border border-[#E5E0D7] space-y-3">
+          <Utensils className="w-7 h-7 text-[#D6A85F]" />
+          <h3 className="font-serif text-base font-bold text-[#142B45]">Shift Meal Packs</h3>
+          <p className="text-xs text-[#718096] leading-relaxed">
+            Early breakfast counters and packed meal options prepared for off-hour flight shifts.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <Plane className="w-8 h-8 text-blue-400" />
-          <h3 className="text-base font-bold text-white">Quick RGIA Commute</h3>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            Located directly on the airport road corridor with easy auto, cab, and employee bus pick-up connectivity.
+        <div className="card-editorial p-6 bg-[#FFFFFF] border border-[#E5E0D7] space-y-3">
+          <Plane className="w-7 h-7 text-[#D6A85F]" />
+          <h3 className="font-serif text-base font-bold text-[#142B45]">Airport Transit Hub</h3>
+          <p className="text-xs text-[#718096] leading-relaxed">
+            Quick 5-minute transit to passenger terminal, cargo complex, and staff security checkpoints.
           </p>
         </div>
       </div>
 
-      {/* Companies We House */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-10 space-y-6">
-        <h3 className="text-2xl font-bold text-white">
-          Aviation Entities & Employers Near DEVI Hostels
-        </h3>
-        <p className="text-slate-300 text-sm">
-          We proudly host staff and crew members working with leading airport organizations:
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-xs font-semibold text-slate-200">
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            IndiGo (InterGlobe)
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            Air India & Air India Express
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            AISATS Ground Handling
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            Çelebi Aviation Cargo
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            GMR Airport Operations
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            SpiceJet & Akasa Air
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            Flight Kitchen & Catering
-          </div>
-          <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-center">
-            Airport Security & Retail
-          </div>
+      {/* Shift Suitable Branches */}
+      <div className="space-y-6">
+        <h2 className="font-serif text-2xl font-bold text-[#142B45] text-center">
+          Branches Optimized for Airport Shift Staff
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {airportBranches.map((b) => (
+            <BranchCard key={b.id} branch={b} />
+          ))}
         </div>
       </div>
 
       {/* CTA */}
-      <div className="text-center space-y-4">
+      <div className="text-center pt-4">
         <Link
           href="/enquiry?category=airport_employee"
-          className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-sm shadow-xl transition-all hover:scale-105"
+          className="btn-primary-navy py-3 px-8 text-xs inline-flex items-center gap-2"
         >
           <span>Submit Airport Employee Enquiry</span>
           <ArrowRight className="w-4 h-4" />

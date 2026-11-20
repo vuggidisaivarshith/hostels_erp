@@ -518,11 +518,11 @@ export default function FinancialReportsPage() {
                       <span>🛡️</span> Refundable Security Deposit Liabilities
                     </h3>
                     <p className="text-xs text-blue-300/80 mt-1">
-                      Held in escrow for active residents. Subject to room inspection, damage deductions, and checkout refund.
+                      Held in dedicated refundable deposit accounts for active residents. Subject to room inspection, damage deductions, and checkout refund.
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs uppercase text-slate-400">Total Escrow Liability</p>
+                    <p className="text-xs uppercase text-slate-400">Total Deposit Liability</p>
                     <p className="text-2xl font-bold text-blue-400">
                       ₹{depositData.reduce((acc, r) => acc + (r.security_deposit || 0), 0).toLocaleString()}
                     </p>
@@ -725,11 +725,11 @@ export default function FinancialReportsPage() {
                       </table>
                     </div>
 
-                    {/* Escrow & Advance Ledger Summaries */}
+                    {/* Security Deposit & Advance Ledger Summaries */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 print:text-black">
-                          3. Security Deposit Escrow Log
+                          3. Security Deposit Ledger Log
                         </h4>
                         <div className="p-3 rounded-lg bg-slate-800/30 border border-slate-800 space-y-2 text-xs print:border-black">
                           {statement.deposits.length === 0 ? (

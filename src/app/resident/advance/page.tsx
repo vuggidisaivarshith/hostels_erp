@@ -10,8 +10,8 @@ export default function ResidentAdvancePage() {
   useEffect(() => {
     const fetchResident = async () => {
       const match = document.cookie.match(/devi_resident_id=([^;]+)/);
-      const residentId = match ? match[1] : 'DV1-1-00001';
-      const res = await fetch(`/api/residents/${residentId}`);
+      if (!match) return;
+      const res = await fetch(`/api/residents/${match[1]}`);
       const json = await res.json();
       if (json.success) setResident(json.data.resident);
     };
@@ -21,49 +21,34 @@ export default function ResidentAdvancePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-white">Advance Rent Credit Ledger</h1>
-        <p className="text-xs text-slate-400">
-          Independent advance rent account separate from security deposits.
+        <h1 className="font-serif text-2xl font-bold text-[#142B45]">Advance Rent Credit Ledger</h1>
+        <p className="text-xs text-[#718096]">
+          Advance rent balance maintained separately from refundable security deposits.
         </p>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xl">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+      <div className="card-editorial p-6 sm:p-8 space-y-6 bg-[#FFFFFF] border border-[#E5E0D7]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E5E0D7] pb-6">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#718096]">
               Current Available Advance Credit
             </span>
-            <p className="text-3xl font-black text-amber-400 font-mono mt-1">
+            <p className="text-3xl font-serif font-bold text-[#142B45] font-mono mt-1">
               ₹{(resident?.advance_balance || 0).toLocaleString()}
             </p>
           </div>
-          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-400">
-            Resident ID: <strong className="text-white font-mono">{resident?.resident_id}</strong>
+          <div className="p-3 bg-[#F5F1E9] rounded-lg border border-[#E5E0D7] text-xs text-[#718096] font-mono">
+            Resident ID: <strong className="text-[#142B45]">{resident?.resident_id || '—'}</strong>
           </div>
         </div>
 
-        <div className="bg-blue-500/10 border border-blue-500/30 p-4 rounded-2xl flex items-start gap-3 text-xs text-blue-300">
-          <Info className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="bg-[#F5F1E9] border border-[#E5E0D7] p-4 rounded-xl flex items-start gap-3 text-xs text-[#263447]">
+          <Info className="w-5 h-5 shrink-0 mt-0.5 text-[#D6A85F]" />
           <div className="space-y-1">
-            <p className="font-bold text-white">How Advance Rent is Utilized:</p>
-            <p>
-              When your monthly rent invoice is generated on your joining date ({resident?.billing_anchor_day}th of every month), any available advance credit balance is automatically deducted before calculating the net balance payable.
+            <p className="font-bold text-[#142B45]">How Advance Rent is Utilized:</p>
+            <p className="leading-relaxed">
+              When your monthly rent invoice is generated on your billing cycle anchor date ({resident?.billing_anchor_day || '—'}th of each month), any available advance credit balance is automatically deducted before calculating the net balance payable. You may also request a refund of unused advance credit upon departure.
             </p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Recent Advance Transactions
-          </h3>
-          <div className="bg-slate-950 rounded-xl p-4 border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
-            <div>
-              <p className="font-bold text-white">Opening Advance Credit</p>
-              <p className="text-[11px] text-slate-400">Admission token balance adjustment</p>
-            </div>
-            <span className="font-mono font-bold text-emerald-400">
-              +₹{(resident?.advance_balance || 0).toLocaleString()}
-            </span>
           </div>
         </div>
       </div>

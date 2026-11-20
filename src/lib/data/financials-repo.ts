@@ -228,7 +228,7 @@ let depositLedgerStore: DepositEntry[] = [
     type: 'deposit_received',
     amount: 10000,
     balance_after: 10000,
-    remarks: 'Refundable security deposit received at admission. Escrow held.',
+    remarks: 'Refundable security deposit received at admission. Held in refundable deposit account.',
     date: '2026-11-01',
   },
   {
@@ -734,4 +734,490 @@ export function getFinancialOverview(): FinancialOverviewSummary {
     payment_method_breakdown: methodBreakdown,
     branch_summaries: branchSummaries,
   };
+}
+
+
+// ----------------- Expenses Management -----------------
+export interface ExpenseEntry {
+  id: string;
+  expense_voucher_no: string;
+  branch_code: 1 | 2 | 3 | 4 | 5;
+  category: 'maintenance' | 'utilities' | 'food_groceries' | 'diesel_generator' | 'staff_salary' | 'laundry' | 'internet' | 'cleaning';
+  amount: number;
+  date: string;
+  payment_method: 'cash' | 'direct_upi' | 'bank_transfer';
+  vendor_name: string;
+  recorded_by: string;
+  receipt_ref: string;
+  notes?: string;
+  created_at: string;
+}
+
+let expensesStore: ExpenseEntry[] = [
+  {
+    id: 'exp-001',
+    expense_voucher_no: 'EXP-2026-001',
+    branch_code: 1,
+    category: 'food_groceries',
+    amount: 14500,
+    date: '2026-11-18',
+    payment_method: 'direct_upi',
+    vendor_name: 'Shamshabad Wholesale Rice & Provisions',
+    recorded_by: 'MARPINA PRADEEP',
+    receipt_ref: 'UPI/9912048512/PROV',
+    notes: 'Weekly fresh vegetables, rice, and cooking ingredients for Devi Mansion mess',
+    created_at: '2026-11-18T10:00:00Z',
+  },
+  {
+    id: 'exp-002',
+    expense_voucher_no: 'EXP-2026-002',
+    branch_code: 1,
+    category: 'diesel_generator',
+    amount: 4500,
+    date: '2026-11-19',
+    payment_method: 'cash',
+    vendor_name: 'HPCL Fuel Station Shamshabad',
+    recorded_by: 'V. Ramesh Babu',
+    receipt_ref: 'CASH-FUEL-4500',
+    notes: '50 Litres Diesel for 45 kVA generator backup',
+    created_at: '2026-11-19T14:30:00Z',
+  },
+  {
+    id: 'exp-003',
+    expense_voucher_no: 'EXP-2026-003',
+    branch_code: 2,
+    category: 'internet',
+    amount: 3200,
+    date: '2026-11-15',
+    payment_method: 'direct_upi',
+    vendor_name: 'Airtel Broadband RGIA',
+    recorded_by: 'K. Sridhar Rao',
+    receipt_ref: 'UPI/7718293041/AIRTEL',
+    notes: 'Monthly 300 Mbps commercial fiber internet plan',
+    created_at: '2026-11-15T09:00:00Z',
+  },
+];
+
+export function getExpenses(branchCode?: number): ExpenseEntry[] {
+  if (branchCode) {
+    return expensesStore.filter((e) => e.branch_code === branchCode);
+  }
+  return expensesStore;
+}
+
+export function recordExpense(data: Omit<ExpenseEntry, 'id' | 'expense_voucher_no' | 'created_at'>): ExpenseEntry {
+  const count = expensesStore.length + 1;
+  const voucher = `EXP-2026-${String(count).padStart(3, '0')}`;
+  const entry: ExpenseEntry = {
+    ...data,
+    id: `exp-${Date.now()}`,
+    expense_voucher_no: voucher,
+    created_at: new Date().toISOString(),
+  };
+  expensesStore.unshift(entry);
+  return entry;
+}
+
+// ----------------- Cash Reconciliation -----------------
+export interface CashReconciliationEntry {
+  id: string;
+  reconciliation_ref: string;
+  branch_code: 1 | 2 | 3 | 4 | 5;
+  date: string;
+  opening_cash: number;
+  cash_collected: number;
+  cash_expenses: number;
+  closing_cash_calculated: number;
+  closing_cash_actual: number;
+  variance: number;
+  verified_by: string;
+  status: 'balanced' | 'variance_flagged';
+  remarks?: string;
+  created_at: string;
+}
+
+let cashReconciliationsStore: CashReconciliationEntry[] = [
+  {
+    id: 'recon-001',
+    reconciliation_ref: 'CR-2026-001',
+    branch_code: 1,
+    date: '2026-11-19',
+    opening_cash: 5000,
+    cash_collected: 14000,
+    cash_expenses: 4500,
+    closing_cash_calculated: 14500,
+    closing_cash_actual: 14500,
+    variance: 0,
+    verified_by: 'MARPINA PRADEEP',
+    status: 'balanced',
+    remarks: 'Daily counter cash drawer physical count matches exactly.',
+    created_at: '2026-11-19T21:00:00Z',
+  },
+];
+
+export function getCashReconciliations(branchCode?: number): CashReconciliationEntry[] {
+  if (branchCode) {
+    return cashReconciliationsStore.filter((c) => c.branch_code === branchCode);
+  }
+  return cashReconciliationsStore;
+}
+
+export function recordCashReconciliation(data: Omit<CashReconciliationEntry, 'id' | 'reconciliation_ref' | 'created_at' | 'variance' | 'closing_cash_calculated' | 'status'>): CashReconciliationEntry {
+  const calculated = data.opening_cash + data.cash_collected - data.cash_expenses;
+  const variance = data.closing_cash_actual - calculated;
+  const count = cashReconciliationsStore.length + 1;
+  const entry: CashReconciliationEntry = {
+    ...data,
+    id: `recon-${Date.now()}`,
+    reconciliation_ref: `CR-2026-${String(count).padStart(3, '0')}`,
+    closing_cash_calculated: calculated,
+    variance: variance,
+    status: variance === 0 ? 'balanced' : 'variance_flagged',
+    created_at: new Date().toISOString(),
+  };
+  cashReconciliationsStore.unshift(entry);
+  return entry;
+}
+
+// ----------------- Unified Transaction Ledger -----------------
+export interface UnifiedTransaction {
+  id: string;
+  reference_no: string;
+  resident_id?: string;
+  devi_resident_id?: string;
+  resident_name?: string;
+  branch_code: 1 | 2 | 3 | 4 | 5;
+  amount: number;
+  transaction_type: 'rent_receipt' | 'advance_credit' | 'advance_refund' | 'deposit_received' | 'deposit_deduction' | 'deposit_refund' | 'adjustment_reversal' | 'branch_expense';
+  payment_method: string;
+  date: string;
+  verification_status: 'verified' | 'pending' | 'reversed';
+  recording_staff: string;
+  category: 'revenue' | 'advance_liability' | 'deposit_liability' | 'refund' | 'expense' | 'reversal';
+  notes?: string;
+}
+
+export function getAllTransactions(filters?: {
+  branch_code?: number;
+  transaction_type?: string;
+  payment_method?: string;
+  start_date?: string;
+  end_date?: string;
+  search?: string;
+}): UnifiedTransaction[] {
+  const transactions: UnifiedTransaction[] = [];
+
+  // 1. Payments Ledger
+  paymentsStore.forEach((p) => {
+    transactions.push({
+      id: p.id,
+      reference_no: p.receipt_number,
+      resident_id: p.resident_id,
+      devi_resident_id: p.devi_resident_id,
+      resident_name: p.resident_name,
+      branch_code: p.branch_code,
+      amount: p.amount,
+      transaction_type: p.reversal_of_id ? 'adjustment_reversal' : 'rent_receipt',
+      payment_method: p.payment_method,
+      date: p.payment_date,
+      verification_status: p.is_reversed ? 'reversed' : (p.status as any),
+      recording_staff: p.collector_name,
+      category: p.reversal_of_id ? 'reversal' : 'revenue',
+      notes: p.remarks || `Payment for Invoice ${p.invoice_number || 'rent'}`,
+    });
+  });
+
+  // 2. Advance Ledger entries
+  advanceLedgerStore.forEach((adv) => {
+    if (adv.type === 'credit') {
+      transactions.push({
+        id: adv.id,
+        reference_no: `ADV-CR-${adv.id}`,
+        resident_id: adv.resident_id,
+        devi_resident_id: adv.devi_resident_id,
+        resident_name: adv.resident_name,
+        branch_code: 1, // mapped to resident's branch
+        amount: adv.amount,
+        transaction_type: 'advance_credit',
+        payment_method: 'direct_upi',
+        date: adv.date,
+        verification_status: 'verified',
+        recording_staff: 'Central Accounts Desk',
+        category: 'advance_liability',
+        notes: adv.description,
+      });
+    }
+  });
+
+  // 3. Security Deposits entries
+  depositLedgerStore.forEach((dep) => {
+    transactions.push({
+      id: dep.id,
+      reference_no: `DEP-${dep.id}`,
+      resident_id: dep.resident_id,
+      devi_resident_id: dep.devi_resident_id,
+      resident_name: dep.resident_name,
+      branch_code: 1,
+      amount: dep.amount,
+      transaction_type: dep.type === 'deposit_received' ? 'deposit_received' : (dep.type === 'damage_deduction' ? 'deposit_deduction' : 'deposit_refund'),
+      payment_method: 'direct_upi',
+      date: dep.date,
+      verification_status: 'verified',
+      recording_staff: 'Central Accounts Desk',
+      category: dep.type === 'deposit_received' ? 'deposit_liability' : (dep.type === 'refund' ? 'refund' : 'revenue'),
+      notes: dep.remarks,
+    });
+  });
+
+  // 4. Expenses
+  expensesStore.forEach((exp) => {
+    transactions.push({
+      id: exp.id,
+      reference_no: exp.expense_voucher_no,
+      branch_code: exp.branch_code,
+      amount: exp.amount,
+      transaction_type: 'branch_expense',
+      payment_method: exp.payment_method,
+      date: exp.date,
+      verification_status: 'verified',
+      recording_staff: exp.recorded_by,
+      category: 'expense',
+      notes: `${exp.vendor_name} — ${exp.notes || exp.category}`,
+    });
+  });
+
+  // Sort by date descending
+  let result = transactions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  if (filters) {
+    if (filters.branch_code) {
+      result = result.filter((t) => t.branch_code === filters.branch_code);
+    }
+    if (filters.transaction_type && filters.transaction_type !== 'all') {
+      result = result.filter((t) => t.transaction_type === filters.transaction_type);
+    }
+    if (filters.payment_method && filters.payment_method !== 'all') {
+      result = result.filter((t) => t.payment_method === filters.payment_method);
+    }
+    if (filters.start_date) {
+      result = result.filter((t) => t.date >= filters.start_date!);
+    }
+    if (filters.end_date) {
+      result = result.filter((t) => t.date <= filters.end_date!);
+    }
+    if (filters.search) {
+      const q = filters.search.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.reference_no.toLowerCase().includes(q) ||
+          (t.devi_resident_id && t.devi_resident_id.toLowerCase().includes(q)) ||
+          (t.resident_name && t.resident_name.toLowerCase().includes(q)) ||
+          (t.notes && t.notes.toLowerCase().includes(q))
+      );
+    }
+  }
+
+  return result;
+}
+
+// ----------------- Visitors Record -----------------
+export interface VisitorRecord {
+  id: string;
+  gate_pass_no: string;
+  resident_id: string;
+  devi_resident_id: string;
+  resident_name: string;
+  branch_code: 1 | 2 | 3 | 4 | 5;
+  visitor_name: string;
+  visitor_phone: string;
+  relation: string;
+  visit_date: string;
+  in_time: string;
+  out_time?: string;
+  purpose: string;
+  status: 'checked_in' | 'checked_out';
+  created_at: string;
+}
+
+let visitorsStore: VisitorRecord[] = [
+  {
+    id: 'vis-001',
+    gate_pass_no: 'GP-2026-001',
+    resident_id: 'res-001',
+    devi_resident_id: 'DV1-1-00001',
+    resident_name: 'Aditya Sai Krishna',
+    branch_code: 1,
+    visitor_name: 'Satyanarayana (Father)',
+    visitor_phone: '9849111220',
+    relation: 'Father',
+    visit_date: '2026-11-19',
+    in_time: '14:30',
+    out_time: '17:00',
+    purpose: 'Family visit & tuition fee deposit',
+    status: 'checked_out',
+    created_at: '2026-11-19T14:30:00Z',
+  },
+];
+
+export function getVisitors(branchCode?: number): VisitorRecord[] {
+  if (branchCode) {
+    return visitorsStore.filter((v) => v.branch_code === branchCode);
+  }
+  return visitorsStore;
+}
+
+export function recordVisitor(data: Omit<VisitorRecord, 'id' | 'gate_pass_no' | 'created_at'>): VisitorRecord {
+  const count = visitorsStore.length + 1;
+  const entry: VisitorRecord = {
+    ...data,
+    id: `vis-${Date.now()}`,
+    gate_pass_no: `GP-2026-${String(count).padStart(3, '0')}`,
+    created_at: new Date().toISOString(),
+  };
+  visitorsStore.unshift(entry);
+  return entry;
+}
+
+export function checkoutVisitor(visitorId: string, outTime: string): boolean {
+  const v = visitorsStore.find((x) => x.id === visitorId);
+  if (!v) return false;
+  v.out_time = outTime;
+  v.status = 'checked_out';
+  return true;
+}
+
+// ----------------- Reminders Item -----------------
+export interface ReminderItem {
+  id: string;
+  branch_code: 1 | 2 | 3 | 4 | 5;
+  title: string;
+  category: 'rent_due' | 'safety_inspection' | 'diesel_refill' | 'water_filter' | 'pest_control' | 'license_renewal';
+  due_date: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'pending' | 'completed';
+  assigned_to: string;
+  created_at: string;
+}
+
+let remindersStore: ReminderItem[] = [
+  {
+    id: 'rem-001',
+    branch_code: 1,
+    title: 'RO Water Filter Membrane Inspection & Filter Replacement',
+    category: 'water_filter',
+    due_date: '2026-11-25',
+    priority: 'high',
+    status: 'pending',
+    assigned_to: 'V. Ramesh Babu',
+    created_at: '2026-11-15T08:00:00Z',
+  },
+  {
+    id: 'rem-002',
+    branch_code: 2,
+    title: 'Diesel Generator Fuel Level Top-up & Oil Check',
+    category: 'diesel_refill',
+    due_date: '2026-11-23',
+    priority: 'medium',
+    status: 'pending',
+    assigned_to: 'M. Anand Kumar',
+    created_at: '2026-11-18T09:00:00Z',
+  },
+  {
+    id: 'rem-003',
+    branch_code: 5,
+    title: 'CCTV Camera #8 Check & Biometric Door Sensor Diagnostics',
+    category: 'safety_inspection',
+    due_date: '2026-11-22',
+    priority: 'urgent',
+    status: 'pending',
+    assigned_to: 'P. Sunitha Reddy',
+    created_at: '2026-11-20T10:00:00Z',
+  },
+];
+
+export function getReminders(branchCode?: number): ReminderItem[] {
+  if (branchCode) {
+    return remindersStore.filter((r) => r.branch_code === branchCode);
+  }
+  return remindersStore;
+}
+
+export function createReminder(data: Omit<ReminderItem, 'id' | 'created_at'>): ReminderItem {
+  const item: ReminderItem = {
+    ...data,
+    id: `rem-${Date.now()}`,
+    created_at: new Date().toISOString(),
+  };
+  remindersStore.unshift(item);
+  return item;
+}
+
+export function toggleReminder(id: string): boolean {
+  const item = remindersStore.find((r) => r.id === id);
+  if (!item) return false;
+  item.status = item.status === 'pending' ? 'completed' : 'pending';
+  return true;
+}
+
+// ----------------- Audit Logs -----------------
+export interface AuditLogItem {
+  id: string;
+  timestamp: string;
+  staff_name: string;
+  staff_role: string;
+  action: string;
+  entity_type: string;
+  entity_id: string;
+  details: string;
+  ip_address?: string;
+}
+
+let auditLogsStore: AuditLogItem[] = [
+  {
+    id: 'aud-001',
+    timestamp: '2026-11-20T18:15:00Z',
+    staff_name: 'MARPINA PRADEEP',
+    staff_role: 'owner',
+    action: 'REVERSE_PAYMENT',
+    entity_type: 'PAYMENT',
+    entity_id: 'pay-101',
+    details: 'Executed non-destructive ledger reversal for payment entry pay-101 with verified reversal trace.',
+    ip_address: '106.51.24.12',
+  },
+  {
+    id: 'aud-002',
+    timestamp: '2026-11-20T14:30:00Z',
+    staff_name: 'K. Sridhar Rao',
+    staff_role: 'accountant',
+    action: 'RECORD_OFFLINE_PAYMENT',
+    entity_type: 'PAYMENT',
+    entity_id: 'pay-102',
+    details: 'Recorded ₹8,500 direct UPI collection for resident Sumanth Nair (DV2-2-00002).',
+    ip_address: '106.51.24.15',
+  },
+  {
+    id: 'aud-003',
+    timestamp: '2026-11-19T11:00:00Z',
+    staff_name: 'V. Ramesh Babu',
+    staff_role: 'branch_manager',
+    action: 'NEW_ADMISSION',
+    entity_type: 'RESIDENT',
+    entity_id: 'res-001',
+    details: 'Confirmed admission for student Aditya Sai Krishna with ID DV1-1-00001 in Room 102 Bed A.',
+    ip_address: '106.51.24.18',
+  },
+];
+
+export function getAuditLogs(): AuditLogItem[] {
+  return auditLogsStore;
+}
+
+export function logAuditEvent(data: Omit<AuditLogItem, 'id' | 'timestamp'>): AuditLogItem {
+  const log: AuditLogItem = {
+    ...data,
+    id: `aud-${Date.now()}`,
+    timestamp: new Date().toISOString(),
+  };
+  auditLogsStore.unshift(log);
+  return log;
 }

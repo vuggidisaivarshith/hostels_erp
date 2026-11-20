@@ -29,9 +29,13 @@ function AdmissionsForm() {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState<Gender>('male');
   const [category, setCategory] = useState<CustomerCategory>('student');
-  const [admissionDate, setAdmissionDate] = useState(new Date().toISOString().split('T')[0]);
+  const [admissionDate, setAdmissionDate] = useState('');
   const [agreedRent, setAgreedRent] = useState<number>(7000);
   const [securityDeposit, setSecurityDeposit] = useState<number>(10000);
+
+  useEffect(() => {
+    setAdmissionDate(new Date().toISOString().split('T')[0]);
+  }, []);
 
   // Emergency contact
   const [emergName, setEmergName] = useState('');
@@ -373,7 +377,7 @@ function AdmissionsForm() {
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500 font-mono font-bold"
               />
               <p className="text-[11px] text-emerald-400 mt-1">
-                Managed in dedicated refundable deposit escrow ledger.
+                Managed in dedicated refundable deposit liability ledger.
               </p>
             </div>
           </div>

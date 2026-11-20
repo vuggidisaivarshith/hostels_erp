@@ -53,6 +53,8 @@ export interface Room {
   has_ac: boolean;
   has_attached_bathroom: boolean;
   monthly_rate_per_bed: number;
+  sharing_type?: string;
+  capacity?: number;
 }
 
 export interface Bed {
@@ -191,6 +193,7 @@ export interface ResidentPayment {
 
 export interface Complaint {
   id: string;
+  ticket_number?: string;
   resident_id: string;
   devi_resident_id: string;
   resident_name: string;

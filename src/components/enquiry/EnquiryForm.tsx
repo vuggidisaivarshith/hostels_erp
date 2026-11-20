@@ -2,9 +2,23 @@
 
 import React, { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { DEVI_BRANCHES } from '@/lib/data/branches';
+import { DEVI_BRANCHES, VERIFIED_CONTACTS } from '@/lib/data/branches';
 import { CustomerCategory, Gender, RoomSharing } from '@/types/database';
-import { CheckCircle2, User, Phone, Mail, Building, Briefcase, Calendar, ShieldCheck, ArrowRight, ArrowLeft, Send, Sparkles } from 'lucide-react';
+import {
+  CheckCircle2,
+  User,
+  Phone,
+  Mail,
+  Building,
+  Briefcase,
+  Calendar,
+  ShieldCheck,
+  ArrowRight,
+  ArrowLeft,
+  Send,
+  MessageCircle,
+  AlertCircle
+} from 'lucide-react';
 
 export default function EnquiryForm() {
   const searchParams = useSearchParams();
@@ -13,6 +27,7 @@ export default function EnquiryForm() {
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [referenceNumber, setReferenceNumber] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // Form State
@@ -21,7 +36,7 @@ export default function EnquiryForm() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState<Gender>('male');
-  
+
   // Emergency Contact
   const [emergencyName, setEmergencyName] = useState('');
   const [emergencyPhone, setEmergencyPhone] = useState('');
@@ -77,11 +92,11 @@ export default function EnquiryForm() {
 
   const validateStep2 = () => {
     if (category === 'student') {
-      if (!collegeName.trim()) return 'Please enter your college/institute name.';
-      if (!course.trim()) return 'Please enter your degree/course.';
+      if (!collegeName.trim()) return 'Please enter your college or academy name.';
+      if (!course.trim()) return 'Please enter your course or field of study.';
     } else {
-      if (!company.trim()) return 'Please enter your employer or airline name.';
-      if (!designation.trim()) return 'Please enter your role or designation.';
+      if (!company.trim()) return 'Please enter your employer, airline, or handling company.';
+      if (!designation.trim()) return 'Please enter your job title or designation.';
     }
     return null;
   };
@@ -149,6 +164,8 @@ export default function EnquiryForm() {
         throw new Error(data.error || 'Failed to submit admission enquiry.');
       }
 
+      const generatedRef = data.data?.enquiry_reference || `ENQ-2026-${Math.floor(10000 + Math.random() * 90000)}`;
+      setReferenceNumber(generatedRef);
       setSubmitted(true);
     } catch (err) {
       setErrorMessage((err as Error).message);
@@ -158,36 +175,71 @@ export default function EnquiryForm() {
   };
 
   if (submitted) {
+    const selectedBranch = DEVI_BRANCHES.find((b) => b.id === preferredBranchId);
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-2xl space-y-6">
-        <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto ring-8 ring-emerald-500/10">
+      <div className="card-editorial p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6 bg-[#FFFFFF] border border-[#E5E0D7]">
+        <div className="w-16 h-16 bg-[#F5F1E9] text-[#477B70] rounded-full flex items-center justify-center mx-auto border border-[#E5E0D7]">
           <CheckCircle2 className="w-10 h-10" />
         </div>
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-          Admission Enquiry Received!
-        </h2>
-        <p className="text-slate-300 text-sm leading-relaxed max-w-lg mx-auto">
-          Thank you, <strong className="text-white">{fullName}</strong>. Your enquiry has been routed directly to the DEVI HOSTELS Central Admissions Desk.
-        </p>
-        <div className="bg-slate-950/80 rounded-xl p-4 text-xs text-slate-300 border border-slate-800 space-y-2 text-left">
-          <p><strong className="text-amber-400">Preferred Location:</strong> {DEVI_BRANCHES.find(b => b.id === preferredBranchId)?.name || 'Shamshabad'}</p>
-          <p><strong className="text-amber-400">Category:</strong> {category === 'student' ? 'College Student' : 'Airport / Aviation Professional'}</p>
-          <p><strong className="text-amber-400">Expected Joining:</strong> {expectedJoiningDate}</p>
-          <p><strong className="text-amber-400">Management Contact:</strong> Marpina Pradeep (+91 98480 12345)</p>
+
+        <div className="space-y-1">
+          <span className="badge-mono border-[#D6A85F] text-[#142B45]">
+            REFERENCE: {referenceNumber}
+          </span>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#142B45]">
+            Admission Enquiry Received
+          </h2>
+          <p className="text-xs text-[#718096]">
+            Thank you, <strong>{fullName}</strong>. Your enquiry details have been logged in the central admissions system.
+          </p>
         </div>
+
+        {/* Mandatory Policy Clarification Notice */}
+        <div className="p-4 rounded-lg bg-[#F5F1E9] border border-[#E5E0D7] text-left text-xs text-[#263447] space-y-2">
+          <div className="flex items-center gap-1.5 font-bold text-[#142B45]">
+            <AlertCircle className="w-4 h-4 text-[#D6A85F]" />
+            <span>Important Notice Regarding Your Enquiry:</span>
+          </div>
+          <p className="leading-relaxed">
+            This submission is an <strong>admission enquiry</strong> for vacancy assessment and branch allocation. An enquiry does <strong>NOT</strong> automatically confirm a bed booking or final admission. Admission is finalized upon physical or digital document verification and confirmation by management.
+          </p>
+        </div>
+
+        {/* Summary of Request */}
+        <div className="rounded-lg p-4 text-xs text-[#263447] bg-[#FFFFFF] border border-[#E5E0D7] space-y-2 text-left font-mono">
+          <p>
+            <strong className="text-[#142B45]">Preferred Branch:</strong> {selectedBranch?.name || 'Shamshabad Branch'}
+          </p>
+          <p>
+            <strong className="text-[#142B45]">Community:</strong> {category === 'student' ? 'College Student' : 'Airport / Aviation Professional'}
+          </p>
+          <p>
+            <strong className="text-[#142B45]">Sharing Preference:</strong> {sharingPreference.replace('_', ' ').toUpperCase()}
+          </p>
+          <p>
+            <strong className="text-[#142B45]">Expected Joining:</strong> {expectedJoiningDate}
+          </p>
+          <p>
+            <strong className="text-[#142B45]">Central Desk Contact:</strong> {VERIFIED_CONTACTS.primary_phone}
+          </p>
+        </div>
+
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href="tel:+919848012345"
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition-all"
+            href={`https://wa.me/${VERIFIED_CONTACTS.whatsapp_number}?text=Hello%20Management%2C%20I%20have%20submitted%20an%20admission%20enquiry%20with%20reference%20${referenceNumber}.%20Please%20let%20me%20know%20bed%20vacancy.`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-emerald-cta w-full sm:w-auto py-3 px-6 text-xs flex items-center justify-center gap-2"
           >
-            Call Management Now
+            <MessageCircle className="w-4 h-4" />
+            <span>Follow Up on WhatsApp</span>
           </a>
           <button
             onClick={() => {
               setSubmitted(false);
               setStep(1);
             }}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm transition-colors"
+            className="btn-ghost-luxury w-full sm:w-auto py-3 px-6 text-xs"
           >
             Submit Another Enquiry
           </button>
@@ -197,85 +249,121 @@ export default function EnquiryForm() {
   }
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl max-w-3xl mx-auto overflow-hidden">
-      {/* Step Progress Tracker */}
-      <div className="bg-slate-950 px-6 py-4 border-b border-slate-800">
-        <div className="flex items-center justify-between max-w-md mx-auto">
-          {[
-            { num: 1, title: 'Personal Info' },
-            { num: 2, title: 'Profile Specifics' },
-            { num: 3, title: 'Hostel & Dates' },
-          ].map((s) => (
-            <div key={s.num} className="flex items-center gap-2">
-              <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
-                  step === s.num
-                    ? 'bg-amber-500 text-slate-950 ring-4 ring-amber-500/20'
-                    : step > s.num
-                    ? 'bg-emerald-500 text-white'
-                    : 'bg-slate-800 text-slate-400'
-                }`}
-              >
-                {step > s.num ? <CheckCircle2 className="w-4 h-4" /> : s.num}
-              </div>
-              <span className={`text-xs hidden sm:inline font-medium ${step === s.num ? 'text-white' : 'text-slate-400'}`}>
-                {s.title}
-              </span>
-            </div>
-          ))}
+    <div className="card-editorial max-w-3xl mx-auto overflow-hidden bg-[#FFFFFF] border border-[#E5E0D7] shadow-sm">
+      {/* Step Indicator Header */}
+      <div className="bg-[#142B45] text-[#FFFFFF] p-6 sm:p-8 border-b border-[#1F3C5F]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-[#D6A85F]">
+              STEP {step} OF 3
+            </span>
+            <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#FFFFFF] mt-0.5">
+              {step === 1 && 'Personal & Emergency Details'}
+              {step === 2 && 'Category & Academic / Employment Details'}
+              {step === 3 && 'Branch & Room Preferences'}
+            </h2>
+          </div>
+          <div className="flex items-center gap-1.5 font-mono text-xs">
+            <span className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+              step >= 1 ? 'bg-[#D6A85F] text-[#142B45]' : 'bg-[#1F3C5F] text-[#E5E0D7]'
+            }`}>
+              1
+            </span>
+            <span className="w-4 h-0.5 bg-[#1F3C5F]" />
+            <span className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+              step >= 2 ? 'bg-[#D6A85F] text-[#142B45]' : 'bg-[#1F3C5F] text-[#E5E0D7]'
+            }`}>
+              2
+            </span>
+            <span className="w-4 h-0.5 bg-[#1F3C5F]" />
+            <span className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+              step >= 3 ? 'bg-[#D6A85F] text-[#142B45]' : 'bg-[#1F3C5F] text-[#E5E0D7]'
+            }`}>
+              3
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Form Content */}
       <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
         {errorMessage && (
-          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold">
-            {errorMessage}
+          <div className="p-3.5 rounded-lg bg-[#FDF2F2] border border-[#F8B4B4] text-xs text-[#9B1C1C] flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#9B1C1C]" />
+            <span>{errorMessage}</span>
           </div>
         )}
 
-        {/* STEP 1: Personal Details */}
+        {/* STEP 1: Personal & Emergency Contact */}
         {step === 1 && (
-          <div className="space-y-6">
+          <div className="space-y-5">
+            {/* Category Selector */}
             <div>
-              <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
-                <User className="w-5 h-5 text-amber-500" />
-                Step 1: Personal Information
-              </h3>
-              <p className="text-xs text-slate-400">
-                Please enter your accurate contact information for admission verification.
-              </p>
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-2">
+                1. Select Resident Community Category
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setCategory('student')}
+                  className={`p-3.5 rounded-lg border text-left text-xs transition-colors flex items-center gap-2.5 ${
+                    category === 'student'
+                      ? 'border-[#142B45] bg-[#F5F1E9] text-[#142B45] font-bold'
+                      : 'border-[#E5E0D7] bg-[#FFFFFF] text-[#718096] hover:bg-[#F5F1E9]/40'
+                  }`}
+                >
+                  <User className="w-4 h-4 text-[#D6A85F]" />
+                  <span>College Student</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCategory('airport_employee')}
+                  className={`p-3.5 rounded-lg border text-left text-xs transition-colors flex items-center gap-2.5 ${
+                    category === 'airport_employee'
+                      ? 'border-[#142B45] bg-[#F5F1E9] text-[#142B45] font-bold'
+                      : 'border-[#E5E0D7] bg-[#FFFFFF] text-[#718096] hover:bg-[#F5F1E9]/40'
+                  }`}
+                >
+                  <Briefcase className="w-4 h-4 text-[#D6A85F]" />
+                  <span>RGIA Airport Staff / Professional</span>
+                </button>
+              </div>
             </div>
 
-            {/* Category Toggle */}
-            <div className="bg-slate-950/80 p-1.5 rounded-xl border border-slate-800 grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => setCategory('student')}
-                className={`py-2.5 px-4 rounded-lg text-xs font-bold transition-all ${
-                  category === 'student'
-                    ? 'bg-amber-500 text-slate-950 shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🎓 College Student
-              </button>
-              <button
-                type="button"
-                onClick={() => setCategory('airport_employee')}
-                className={`py-2.5 px-4 rounded-lg text-xs font-bold transition-all ${
-                  category === 'airport_employee'
-                    ? 'bg-amber-500 text-slate-950 shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                ✈️ RGIA Airport Staff
-              </button>
+            {/* Gender Selector */}
+            <div>
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-2">
+                2. Gender (Determines Branch Options)
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleGenderChange('male')}
+                  className={`p-3 rounded-lg border text-xs text-center transition-colors ${
+                    gender === 'male'
+                      ? 'border-[#142B45] bg-[#F5F1E9] text-[#142B45] font-bold'
+                      : 'border-[#E5E0D7] text-[#718096]'
+                  }`}
+                >
+                  Male (Branches 1, 2, 3, 4)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleGenderChange('female')}
+                  className={`p-3 rounded-lg border text-xs text-center transition-colors ${
+                    gender === 'female'
+                      ? 'border-[#142B45] bg-[#F5F1E9] text-[#142B45] font-bold'
+                      : 'border-[#E5E0D7] text-[#718096]'
+                  }`}
+                >
+                  Female (Girls Hostel Branch 1)
+                </button>
+              </div>
             </div>
 
+            {/* Full Name & Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
                   Full Name *
                 </label>
                 <input
@@ -283,13 +371,13 @@ export default function EnquiryForm() {
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Rahul Varma"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                  placeholder="e.g. M. Sai Kumar"
+                  className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
                   Mobile Number (10 Digits) *
                 </label>
                 <input
@@ -297,106 +385,59 @@ export default function EnquiryForm() {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="e.g. 9849012345"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                  placeholder="e.g. 9989897705"
+                  className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="e.g. yourname@gmail.com"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Gender *
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleGenderChange('male')}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
-                      gender === 'male'
-                        ? 'bg-blue-600/20 border-blue-500 text-blue-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
-                    }`}
-                  >
-                    Male (Boys Hostels 1-4)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleGenderChange('female')}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold border transition-colors ${
-                      gender === 'female'
-                        ? 'bg-rose-600/20 border-rose-500 text-rose-300'
-                        : 'bg-slate-950 border-slate-800 text-slate-400'
-                    }`}
-                  >
-                    Female (Girls Branch 1)
-                  </button>
-                </div>
-              </div>
+            {/* Email */}
+            <div>
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                Email Address (Optional)
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="e.g. resident@gmail.com"
+                className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
+              />
             </div>
 
             {/* Emergency Contact */}
-            <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800/80 space-y-3">
-              <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                Emergency Contact Details
-              </h4>
+            <div className="p-4 rounded-lg bg-[#F5F1E9] border border-[#E5E0D7] space-y-3">
+              <p className="font-mono text-xs font-bold uppercase text-[#142B45]">
+                Mandatory Emergency Contact
+              </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
-                    Contact Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={emergencyName}
-                    onChange={(e) => setEmergencyName(e.target.value)}
-                    placeholder="e.g. Suresh Varma"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
-                    Contact Phone *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={emergencyPhone}
-                    onChange={(e) => setEmergencyPhone(e.target.value)}
-                    placeholder="e.g. 9849098765"
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-semibold text-slate-400 mb-1">
-                    Relationship *
-                  </label>
-                  <select
-                    value={emergencyRelation}
-                    onChange={(e) => setEmergencyRelation(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500"
-                  >
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Brother">Brother</option>
-                    <option value="Sister">Sister</option>
-                    <option value="Guardian">Guardian</option>
-                    <option value="Colleague">Colleague / Friend</option>
-                  </select>
-                </div>
+                <input
+                  type="text"
+                  required
+                  value={emergencyName}
+                  onChange={(e) => setEmergencyName(e.target.value)}
+                  placeholder="Contact Name"
+                  className="bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3 py-2 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
+                />
+                <input
+                  type="tel"
+                  required
+                  value={emergencyPhone}
+                  onChange={(e) => setEmergencyPhone(e.target.value)}
+                  placeholder="Emergency Phone"
+                  className="bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3 py-2 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
+                />
+                <select
+                  value={emergencyRelation}
+                  onChange={(e) => setEmergencyRelation(e.target.value)}
+                  className="bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3 py-2 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
+                >
+                  <option value="Parent">Parent</option>
+                  <option value="Guardian">Guardian</option>
+                  <option value="Sibling">Sibling</option>
+                  <option value="Relative">Relative</option>
+                  <option value="Employer">Employer</option>
+                </select>
               </div>
             </div>
           </div>
@@ -404,42 +445,27 @@ export default function EnquiryForm() {
 
         {/* STEP 2: Category Specifics */}
         {step === 2 && (
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
-                {category === 'student' ? (
-                  <>🎓 College Student Academic Details</>
-                ) : (
-                  <>✈️ Airport / Aviation Employment Details</>
-                )}
-              </h3>
-              <p className="text-xs text-slate-400">
-                {category === 'student'
-                  ? 'Verify your college enrolment for student mess and library access privileges.'
-                  : 'Tailored for airport staff shift schedules near RGIA Shamshabad.'}
-              </p>
-            </div>
-
+          <div className="space-y-4">
             {category === 'student' ? (
               <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    College / Institute Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={collegeName}
-                    onChange={(e) => setCollegeName(e.target.value)}
-                    placeholder="e.g. Vardhaman College of Engineering, Shamshabad"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Course / Degree & Branch *
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      College / University / Academy Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={collegeName}
+                      onChange={(e) => setCollegeName(e.target.value)}
+                      placeholder="e.g. Vardhaman College of Engineering"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      Degree / Course / Stream *
                     </label>
                     <input
                       type="text"
@@ -447,100 +473,102 @@ export default function EnquiryForm() {
                       value={course}
                       onChange={(e) => setCourse(e.target.value)}
                       placeholder="e.g. B.Tech Computer Science / Aviation"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                     />
                   </div>
+                </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
                       Academic Year
                     </label>
                     <select
                       value={academicYear}
                       onChange={(e) => setAcademicYear(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                     >
-                      <option value="1st Year">1st Year / Fresher</option>
+                      <option value="1st Year">1st Year</option>
                       <option value="2nd Year">2nd Year</option>
                       <option value="3rd Year">3rd Year</option>
-                      <option value="4th Year">4th Year (Final Year)</option>
-                      <option value="Postgraduate">Postgraduate / Masters</option>
+                      <option value="4th Year">4th Year</option>
+                      <option value="Postgraduate">Postgraduate</option>
                     </select>
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                    Parent / Guardian Contact Phone
-                  </label>
-                  <input
-                    type="tel"
-                    value={parentPhone}
-                    onChange={(e) => setParentPhone(e.target.value)}
-                    placeholder="Parent mobile number for updates & leave sanction"
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                  />
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      Parent Mobile Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={parentPhone}
+                      onChange={(e) => setParentPhone(e.target.value)}
+                      placeholder="e.g. 9849012345"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
+                    />
+                  </div>
                 </div>
               </div>
             ) : (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Employer / Airline / Company Name *
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      Airline / Employer Company *
                     </label>
                     <input
                       type="text"
                       required
                       value={company}
                       onChange={(e) => setCompany(e.target.value)}
-                      placeholder="e.g. IndiGo, Air India, AISATS, Çelebi, GMR"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      placeholder="e.g. IndiGo / Air India / AISATS / Çelebi"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Job Designation / Role *
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      Designation / Role *
                     </label>
                     <input
                       type="text"
                       required
                       value={designation}
                       onChange={(e) => setDesignation(e.target.value)}
-                      placeholder="e.g. Ground Operations, Cabin Crew, Cargo Staff"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      placeholder="e.g. Cabin Crew / Security Officer / Ground Staff"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
                       Shift Timing Pattern
                     </label>
                     <select
                       value={shiftTiming}
                       onChange={(e) => setShiftTiming(e.target.value)}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
                     >
-                      <option value="Rotational Shifts">Rotational Day & Night Shifts</option>
-                      <option value="Regular Day Shift">Regular Day Shift (9 AM - 6 PM)</option>
-                      <option value="Night Shift">Night Shift Only (8 PM - 5 AM)</option>
-                      <option value="Early Morning Flight Shift">Early Morning Flight Shift (4 AM - 1 PM)</option>
+                      <option value="Rotational Shifts">Rotational Shifts (Day & Night)</option>
+                      <option value="Day Shift Only">Regular Day Shift</option>
+                      <option value="Night Shift Only">Night Shift Dedicated</option>
+                      <option value="Split Shifts">Flight Timed / Split Shift</option>
                     </select>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                      Employee ID / Badge No. (Optional)
+                    <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                      Airport Employee ID (Optional)
                     </label>
                     <input
                       type="text"
                       value={employeeId}
                       onChange={(e) => setEmployeeId(e.target.value)}
-                      placeholder="Airport Entry Pass (AEP) or Company ID"
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
+                      placeholder="e.g. EMP-9921"
+                      className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] placeholder-[#718096] focus:outline-none focus:border-[#142B45]"
                     />
                   </div>
                 </div>
@@ -549,107 +577,76 @@ export default function EnquiryForm() {
           </div>
         )}
 
-        {/* STEP 3: Branch Selection & Joining Date */}
+        {/* STEP 3: Branch & Room Preferences */}
         {step === 3 && (
-          <div className="space-y-6">
+          <div className="space-y-5">
+            {/* Preferred Branch */}
             <div>
-              <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
-                <Building className="w-5 h-5 text-amber-500" />
-                Step 3: Branch & Room Preferences
-              </h3>
-              <p className="text-xs text-slate-400">
-                Select your preferred branch from our five locations and your prospective move-in date.
-              </p>
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                Preferred Branch Location *
+              </label>
+              <select
+                value={preferredBranchId}
+                onChange={(e) => setPreferredBranchId(e.target.value)}
+                className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
+              >
+                {availableBranches.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name} (Code {b.branch_code})
+                  </option>
+                ))}
+              </select>
             </div>
 
+            {/* Sharing Preference */}
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-2">
-                Preferred Branch *
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-2">
+                Room Sharing Preference
               </label>
-              <div className="space-y-2">
-                {availableBranches.map((b) => (
-                  <label
-                    key={b.id}
-                    className={`flex items-start gap-3 p-3.5 rounded-xl border cursor-pointer transition-all ${
-                      preferredBranchId === b.id
-                        ? 'bg-amber-500/10 border-amber-500 text-white'
-                        : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {(['single', '2_sharing', '3_sharing', '4_sharing'] as RoomSharing[]).map((sh) => (
+                  <button
+                    key={sh}
+                    type="button"
+                    onClick={() => setSharingPreference(sh)}
+                    className={`p-3 rounded-lg border text-xs font-mono text-center transition-colors ${
+                      sharingPreference === sh
+                        ? 'border-[#142B45] bg-[#F5F1E9] text-[#142B45] font-bold'
+                        : 'border-[#E5E0D7] text-[#718096] hover:bg-[#F5F1E9]/40'
                     }`}
                   >
-                    <input
-                      type="radio"
-                      name="branch"
-                      value={b.id}
-                      checked={preferredBranchId === b.id}
-                      onChange={() => setPreferredBranchId(b.id)}
-                      className="mt-1 accent-amber-500"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-sm text-white">
-                          Branch {b.branch_code}: {b.name}
-                        </span>
-                        <span className="text-xs font-bold text-amber-400">
-                          ₹{b.starting_price_per_month.toLocaleString()} / mo
-                        </span>
-                      </div>
-                      <p className="text-xs text-slate-400 mt-0.5">{b.distance_from_rgia}</p>
-                    </div>
-                  </label>
+                    {sh.replace('_', ' ').toUpperCase()}
+                  </button>
                 ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Room Sharing Preference *
-                </label>
-                <select
-                  value={sharingPreference}
-                  onChange={(e) => setSharingPreference(e.target.value as RoomSharing)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                >
-                  <option value="1_sharing">1-Sharing (Private Room)</option>
-                  <option value="2_sharing">2-Sharing (Standard Comfort)</option>
-                  <option value="3_sharing">3-Sharing (Economy)</option>
-                  <option value="4_sharing">4-Sharing (Budget Friendly)</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                  Expected Joining Date *
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={expectedJoiningDate}
-                  onChange={(e) => setExpectedJoiningDate(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500"
-                />
-              </div>
-            </div>
-
-            <div className="bg-slate-950/60 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-1">
-              <p className="text-white font-semibold">Included in every DEVI Hostels bed:</p>
-              <p>✓ 3-times daily freshly prepared hygienic South & North Indian food</p>
-              <p>✓ High-speed unlimited Wi-Fi, daily housekeeping, 24/7 hot water</p>
-              <p>✓ Monitored CCTV, biometric security, and dedicated resident support</p>
+            {/* Expected Joining Date */}
+            <div>
+              <label className="block text-xs font-mono font-bold uppercase text-[#142B45] mb-1.5">
+                Expected Joining Date *
+              </label>
+              <input
+                type="date"
+                required
+                value={expectedJoiningDate}
+                onChange={(e) => setExpectedJoiningDate(e.target.value)}
+                className="w-full bg-[#FFFFFF] border border-[#E5E0D7] rounded-lg px-3.5 py-2.5 text-xs text-[#142B45] focus:outline-none focus:border-[#142B45]"
+              />
             </div>
           </div>
         )}
 
-        {/* Buttons */}
-        <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
+        {/* Navigation Buttons */}
+        <div className="pt-4 border-t border-[#E5E0D7] flex items-center justify-between gap-3">
           {step > 1 ? (
             <button
               type="button"
               onClick={() => setStep(step - 1)}
-              className="px-4 py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-300 hover:text-white text-xs font-bold flex items-center gap-1.5 transition-colors"
+              className="btn-ghost-luxury py-2.5 px-4 text-xs flex items-center gap-1.5"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              Previous
+              <span>Previous</span>
             </button>
           ) : (
             <div />
@@ -659,25 +656,19 @@ export default function EnquiryForm() {
             <button
               type="button"
               onClick={handleNext}
-              className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold flex items-center gap-2 shadow-md transition-all"
+              className="btn-primary-navy py-2.5 px-6 text-xs flex items-center gap-1.5"
             >
-              Continue to Step {step + 1}
+              <span>Next Step</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           ) : (
             <button
               type="submit"
               disabled={submitting}
-              className="px-7 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-extrabold flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all disabled:opacity-50"
+              className="btn-primary-navy py-2.5 px-7 text-xs flex items-center gap-1.5"
             >
-              {submitting ? (
-                <>Submitting Enquiry...</>
-              ) : (
-                <>
-                  <Send className="w-3.5 h-3.5" />
-                  Submit Admission Enquiry
-                </>
-              )}
+              <Send className="w-3.5 h-3.5" />
+              <span>{submitting ? 'Submitting Enquiry...' : 'Submit Admission Enquiry'}</span>
             </button>
           )}
         </div>

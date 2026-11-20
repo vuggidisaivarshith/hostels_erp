@@ -86,7 +86,7 @@ let notificationsStore: NotificationRecord[] = [
     channel: 'sms',
     template: 'admission_welcome',
     title: 'Admission Confirmed',
-    body: 'DEVI HOSTELS: Your admission is confirmed at Girls Hostel Branch 1. Permanent ID: DV5-1-00003. Security deposit escrow logged: Rs 15,000.',
+    body: 'DEVI HOSTELS: Your admission is confirmed at Girls Hostel Branch 1. Permanent ID: DV5-1-00003. Security deposit logged: Rs 15,000.',
     status: 'delivered',
     metadata: { branch_code: 5, room_number: '101' },
     sent_at: '2026-11-10 14:20:00',
