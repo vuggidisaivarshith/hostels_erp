@@ -37,11 +37,24 @@ export default function AdminOverviewPage() {
 
         <div className="flex flex-wrap items-center gap-3">
           <Link
+            href="/admin/analytics"
+            className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
+          >
+            <TrendingUp className="w-4 h-4" />
+            Analytics & BI
+          </Link>
+          <Link
+            href="/admin/staff"
+            className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
+          >
+            <ShieldCheck className="w-4 h-4" />
+            Staff & RBAC
+          </Link>
+          <Link
             href="/admin/finances"
             className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-1.5"
           >
-            <TrendingUp className="w-4 h-4" />
-            Financial Dashboard
+            Financials
           </Link>
           <Link
             href="/admin/admissions"
@@ -49,12 +62,6 @@ export default function AdminOverviewPage() {
           >
             <UserCheck className="w-4 h-4" />
             New Admission
-          </Link>
-          <Link
-            href="/admin/inventory"
-            className="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-white font-semibold text-xs"
-          >
-            Room & Bed Vacancy
           </Link>
         </div>
       </div>
