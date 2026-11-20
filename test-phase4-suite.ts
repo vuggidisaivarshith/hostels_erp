@@ -93,7 +93,7 @@ async function runTests() {
   });
   assert(createStaffRes.success, 'Created new Branch Manager staff member');
   assert(createStaffRes.staff?.role === 'branch_manager', 'Role set to branch_manager');
-  assert(createStaffRes.staff?.assigned_branch_codes.includes(3), 'Assigned exclusively to Branch 3');
+  assert(Boolean(createStaffRes.staff?.assigned_branch_codes.includes(3)), 'Assigned exclusively to Branch 3');
 
   // Status toggle
   const toggleRes = updateStaffStatus(createStaffRes.staff!.id, 'inactive');

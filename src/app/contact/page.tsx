@@ -1,125 +1,152 @@
 import React from 'react';
 import Link from 'next/link';
-import { MapPin, Phone, Mail, Clock, ShieldCheck, UserCheck, ArrowRight, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ShieldCheck, UserCheck, ArrowRight, MessageCircle, ExternalLink } from 'lucide-react';
+import { InstagramIcon } from '@/components/ui/Icons';
 import { DEVI_BRANCHES } from '@/lib/data/branches';
 
 export default function ContactPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16 bg-[#FAFAF9]">
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
-          Get In Touch
-        </span>
-        <h1 className="text-4xl sm:text-5xl font-black text-white">
-          Contact DEVI HOSTELS Management
+        <span className="badge-mono mb-2">CONTACT DESK</span>
+        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0F172A]">
+          Connect with <span className="italic text-[#365679] font-medium">DEVI HOSTELS & DEVI MANSION</span>
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Reach out directly to Owner <strong>Marpina Pradeep</strong> and our Shamshabad branch desk for room tours, immediate check-ins, or admission enquiries.
+        <p className="text-[#334155] text-sm sm:text-base leading-relaxed">
+          Reach out directly to Proprietor <strong>MARPINA PRADEEP</strong> and our Shamshabad centralized admission desk for room visits, bed allotments, or corporate airport staff tie-ups.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Contact Info Cards */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-xl">
-            <h3 className="text-xl font-bold text-white">
+          <div className="card-glass p-8 space-y-6 bg-white border border-slate-200">
+            <h3 className="font-serif text-2xl font-bold text-[#0F172A]">
               Central Administration Office
             </h3>
 
-            <div className="space-y-4 text-xs text-slate-300">
+            <div className="space-y-4 text-xs text-[#334155]">
               <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <MapPin className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white text-sm block mb-0.5">Physical Address:</strong>
-                  Opp. HP Petrol Bunk, Main Airport Approach Road, Shamshabad, Hyderabad, Telangana 501218, India.
+                  <strong className="text-[#0F172A] text-sm block mb-0.5">Physical Address:</strong>
+                  Street Number 8, Rallaguda Road, Madhura Nagar, Shamshabad, Hyderabad, Telangana — 501218, India.
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <Phone className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white text-sm block mb-0.5">Phone (Call / WhatsApp):</strong>
-                  <a href="tel:+919848012345" className="text-amber-400 font-bold hover:underline text-sm block">
-                    +91 98480 12345
+                  <strong className="text-[#0F172A] text-sm block mb-0.5">Phone (Call & WhatsApp):</strong>
+                  <a href="tel:+919989897705" className="font-mono text-emerald-700 font-bold hover:underline text-sm block">
+                    +91 99898 97705
                   </a>
-                  <p className="text-slate-400 text-[11px] mt-0.5">Spoken Languages: Telugu, Hindi, English</p>
+                  <a href="tel:+919494012345" className="font-mono text-slate-700 font-bold hover:underline text-xs block mt-0.5">
+                    +91 94940 12345 (Proprietor: Marpina Pradeep)
+                  </a>
+                  <p className="text-[#64748B] text-[11px] mt-0.5 font-mono">Languages: Telugu, Hindi, English</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Mail className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <InstagramIcon className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white text-sm block mb-0.5">Official Email:</strong>
-                  <a href="mailto:contact@devihostels.com" className="text-slate-300 hover:text-white">
+                  <strong className="text-[#0F172A] text-sm block mb-0.5">Official Instagram:</strong>
+                  <a
+                    href="https://www.instagram.com/devi_mansion_/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-rose-700 font-bold hover:underline flex items-center gap-1"
+                  >
+                    @devi_mansion_ <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Mail className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-[#0F172A] text-sm block mb-0.5">Official Email:</strong>
+                  <a href="mailto:contact@devihostels.com" className="text-[#334155] hover:text-[#0F172A] font-mono">
                     contact@devihostels.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                <Clock className="w-5 h-5 text-purple-600 shrink-0 mt-0.5" />
                 <div>
-                  <strong className="text-white text-sm block mb-0.5">Office & Visiting Hours:</strong>
-                  <p>Admission Desk: 7:00 AM – 10:00 PM (All 7 Days)</p>
-                  <p className="text-emerald-400 font-semibold">Airport Shift Residents: 24/7 Check-in Assistance</p>
+                  <strong className="text-[#0F172A] text-sm block mb-0.5">Office Hours & Check-ins:</strong>
+                  Open 24 Hours • 7 Days a Week (Accommodating all RGIA flight shifts)
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-3">
+            <div className="pt-4 border-t border-slate-200 flex flex-col gap-2">
               <a
-                href="https://wa.me/919848012345"
+                href="https://wa.me/919989897705?text=Hello%20Devi%20Hostels%20Management%2C%20I%20am%20enquiring%20about%20room%20availability%20in%20Shamshabad."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+                className="btn-emerald-cta w-full py-3 text-center"
               >
-                <MessageCircle className="w-4 h-4" /> WhatsApp Chat
+                <MessageCircle className="w-4 h-4" />
+                <span>Chat on WhatsApp (+91 99898 97705)</span>
               </a>
               <a
-                href="tel:+919848012345"
-                className="flex-1 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-md transition-all"
+                href="https://share.google/iCW7Zy3mRxZL94HtS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost-luxury w-full py-2.5 text-center text-xs"
               >
-                <Phone className="w-4 h-4" /> Call Direct
+                <ExternalLink className="w-3.5 h-3.5" />
+                Google Knowledge Graph & Directions
               </a>
             </div>
           </div>
         </div>
 
-        {/* 5 Branches Direct Address List */}
-        <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-8 space-y-6 shadow-xl">
-          <h3 className="text-xl font-bold text-white">
-            Find the Nearest Branch to Your College or Airport Gate
+        {/* 5 Branch Direct Helplines */}
+        <div className="lg:col-span-7 space-y-4">
+          <h3 className="font-serif text-2xl font-bold text-[#0F172A] mb-4">
+            Five Branch Network Direct Contacts
           </h3>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {DEVI_BRANCHES.map((b) => (
               <div
                 key={b.id}
-                className="bg-slate-950 p-4 rounded-xl border border-slate-800/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                className="card-glass p-5 rounded-2xl bg-white border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
               >
-                <div>
+                <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
-                      DV{b.branch_code}
+                    <span className="badge-mono text-[9px]">
+                      BRANCH {b.branch_code}
                     </span>
-                    <h4 className="text-sm font-bold text-white">{b.name}</h4>
+                    <span className={`text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded ${
+                      b.gender_category === 'girls' ? 'bg-rose-100 text-rose-800' : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {b.gender_category === 'girls' ? 'Girls Only' : 'Boys Hostel'}
+                    </span>
                   </div>
-                  <p className="text-xs text-slate-400 mt-1">{b.address_line1}, {b.city}</p>
-                  <p className="text-[11px] text-amber-400 font-medium mt-0.5">{b.distance_from_rgia}</p>
+                  <h4 className="font-serif text-base font-bold text-[#0F172A]">{b.name}</h4>
+                  <p className="text-xs text-[#64748B] flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-amber-600" />
+                    {b.address_line1} ({b.distance_from_rgia})
+                  </p>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <Link
-                    href={`/branches/${b.branch_code}`}
-                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold"
+                <div className="flex sm:flex-col items-center sm:items-end gap-2 shrink-0">
+                  <a
+                    href="tel:+919989897705"
+                    className="btn-ghost-luxury py-1.5 px-3 text-[10px]"
                   >
-                    View
-                  </Link>
+                    <Phone className="w-3 h-3 text-emerald-600" /> Call Branch
+                  </a>
                   <Link
                     href={`/enquiry?branch=${b.branch_code}`}
-                    className="px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold"
+                    className="btn-primary-ink py-1.5 px-3 text-[10px]"
                   >
-                    Enquire
+                    Enquire Bed
                   </Link>
                 </div>
               </div>

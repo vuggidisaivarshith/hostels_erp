@@ -1,50 +1,61 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, HeartHandshake, Building2, MapPin, Phone, Mail, Award, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, HeartHandshake, Building2, MapPin, Phone, Mail, Award, CheckCircle2, ExternalLink } from 'lucide-react';
+import { InstagramIcon } from '@/components/ui/Icons';
 import { DEVI_BRANCHES } from '@/lib/data/branches';
 
 export default function AboutPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16 bg-[#FAFAF9]">
       {/* Page Header */}
       <div className="text-center max-w-3xl mx-auto space-y-4">
-        <span className="text-xs font-bold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30">
-          About DEVI Hostels
-        </span>
-        <h1 className="text-4xl sm:text-5xl font-black text-white">
-          A Legacy of Hospitality, Safety & Home-Like Comfort
+        <span className="badge-mono mb-2">ABOUT DEVI HOSTELS & DEVI MANSION</span>
+        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0F172A] leading-tight">
+          A Legacy of Safety, Community & <span className="italic text-[#365679] font-medium">Home-Like Comfort</span>
         </h1>
-        <p className="text-slate-300 text-base leading-relaxed">
-          Operating in Shamshabad, Hyderabad under the leadership of <strong>MARPINA PRADEEP</strong>, DEVI HOSTELS provides five premier, tech-enabled hostel branches built for students and airport professionals.
+        <p className="text-[#334155] text-base leading-relaxed">
+          Operating in Shamshabad, Hyderabad under the leadership of Proprietor <strong>MARPINA PRADEEP</strong>, DEVI HOSTELS provides five premier, tech-enabled hostel branches built for students and RGIA aviation professionals.
         </p>
       </div>
 
       {/* Leadership Profile */}
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl">
+      <div className="card-glass p-8 sm:p-12 rounded-3xl bg-white border border-slate-200 shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-4 text-center">
-            <div className="w-32 h-32 rounded-3xl bg-gradient-to-tr from-amber-500 to-amber-300 mx-auto flex items-center justify-center text-slate-950 font-black text-4xl shadow-xl">
+            <div className="w-32 h-32 rounded-2xl bg-[#0F172A] text-white mx-auto flex items-center justify-center font-serif font-bold text-4xl shadow-md border border-[#1E293B]">
               MP
             </div>
-            <h3 className="text-2xl font-bold text-white mt-4">MARPINA PRADEEP</h3>
-            <p className="text-xs font-bold uppercase text-amber-400 tracking-wider">Founder & Managing Director</p>
-            <p className="text-xs text-slate-400 mt-1">DEVI HOSTELS Network</p>
+            <h3 className="font-serif text-2xl font-bold text-[#0F172A] mt-4">MARPINA PRADEEP</h3>
+            <p className="font-mono text-xs font-bold uppercase text-[#365679] tracking-wider">Founder & Proprietor</p>
+            <p className="text-xs text-[#64748B] mt-0.5">DEVI HOSTELS & DEVI MANSION Network</p>
+            <div className="pt-3 flex justify-center gap-2">
+              <a
+                href="https://www.instagram.com/devi_mansion_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="badge-mono text-[9px] hover:border-[#0F172A]"
+              >
+                <InstagramIcon className="w-3 h-3 text-rose-600" /> @devi_mansion_
+              </a>
+            </div>
           </div>
 
           <div className="md:col-span-8 space-y-4">
-            <h4 className="text-2xl font-bold text-white">
-              “Building Trust in Shamshabad Since Day One”
+            <h4 className="font-serif text-2xl sm:text-3xl font-bold text-[#0F172A]">
+              “Building Trust & Comfort in Shamshabad Since Day One”
             </h4>
-            <p className="text-sm text-slate-300 leading-relaxed">
+            <p className="text-sm text-[#334155] leading-relaxed">
               When we established DEVI HOSTELS in Shamshabad, our goal was simple: solve the acute shortage of clean, secure, and honestly priced living spaces for students attending local colleges and shift workers serving Rajiv Gandhi International Airport (RGIA).
             </p>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Today, DEVI HOSTELS has grown into a centralized network of five branches — four dedicated Boys Hostels and one high-security exclusive Girls Hostel. Every branch operates under our personal supervision, strict biometric access protocols, nutritious home-style mess dining, and transparent digital management.
+            <p className="text-sm text-[#334155] leading-relaxed">
+              Today, DEVI HOSTELS operates five centralized branches — four dedicated Boys Hostels including the flagship <strong>Devi Mansion (The Boys Town)</strong> with on-site gym and vehicle parking, and one exclusive high-security Girls Hostel. Every resident receives a permanent unique Resident ID and individual joining-date billing.
             </p>
-            <div className="pt-2 flex flex-wrap items-center gap-6 text-xs text-slate-400 border-t border-slate-800">
-              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-amber-500" /> Shamshabad, Hyderabad</span>
-              <span className="flex items-center gap-1.5"><Phone className="w-4 h-4 text-amber-500" /> +91 98480 12345</span>
-              <span className="flex items-center gap-1.5"><Mail className="w-4 h-4 text-amber-500" /> contact@devihostels.com</span>
+            <div className="pt-4 flex flex-wrap items-center gap-6 text-xs text-[#64748B] border-t border-slate-200 font-mono">
+              <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-amber-600" /> Shamshabad, Hyderabad</span>
+              <a href="tel:+919989897705" className="flex items-center gap-1.5 hover:text-[#0F172A] font-bold text-[#0F172A]">
+                <Phone className="w-4 h-4 text-emerald-600" /> +91 99898 97705
+              </a>
+              <span className="flex items-center gap-1.5"><Mail className="w-4 h-4 text-blue-600" /> admissions@devihostels.com</span>
             </div>
           </div>
         </div>
@@ -52,61 +63,34 @@ export default function AboutPage() {
 
       {/* Core Values */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+        <div className="card-glass p-6 rounded-2xl bg-white space-y-3">
+          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center font-bold">
             <ShieldCheck className="w-6 h-6" />
           </div>
-          <h4 className="text-lg font-bold text-white">Uncompromised Security</h4>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            All 5 branches are equipped with 24/7 CCTV surveillance, biometric access gates, police-verified wardens, and exclusive female security staff for Girls Hostel Branch 1.
+          <h4 className="font-serif text-lg font-bold text-[#0F172A]">Uncompromised Security</h4>
+          <p className="text-xs text-[#334155] leading-relaxed">
+            Round-the-clock CCTV coverage, biometric entry, responsible wardens, and strict visitor control.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+        <div className="card-glass p-6 rounded-2xl bg-white space-y-3">
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-700 flex items-center justify-center font-bold">
             <HeartHandshake className="w-6 h-6" />
           </div>
-          <h4 className="text-lg font-bold text-white">Homely South & North Indian Food</h4>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            We cook 3 wholesome meals every single day in spotlessly sanitized commercial kitchens. Unlimited food, clean RO drinking water, and special Sunday feasts.
+          <h4 className="font-serif text-lg font-bold text-[#0F172A]">Homely Dining Culture</h4>
+          <p className="text-xs text-[#334155] leading-relaxed">
+            Fresh, hygienic meals cooked 3 times daily with early morning and late night packed options for airport shift staff.
           </p>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+        <div className="card-glass p-6 rounded-2xl bg-white space-y-3">
+          <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-700 flex items-center justify-center font-bold">
             <Building2 className="w-6 h-6" />
           </div>
-          <h4 className="text-lg font-bold text-white">Unified Centralized Management</h4>
-          <p className="text-xs text-slate-300 leading-relaxed">
-            A single, modern ERP system governs all 5 branches. Permanent DEVI Resident IDs, automated joining-date rent invoices, and transparent online payments.
+          <h4 className="font-serif text-lg font-bold text-[#0F172A]">Modern Infrastructure</h4>
+          <p className="text-xs text-[#334155] leading-relaxed">
+            In-house gym at Devi Mansion, vehicle parking, 24/7 hot water, high-speed Wi-Fi, and heavy-duty power backup.
           </p>
-        </div>
-      </div>
-
-      {/* Branch Summary Grid */}
-      <div className="space-y-6">
-        <h3 className="text-2xl font-bold text-white">The DEVI Hostels 5-Branch Network</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {DEVI_BRANCHES.map((b) => (
-            <div key={b.id} className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-amber-400 bg-slate-950 px-2 py-0.5 rounded">
-                  Branch Code {b.branch_code}
-                </span>
-                <span className="text-xs font-semibold text-slate-400">
-                  {b.total_floors} Floors
-                </span>
-              </div>
-              <h4 className="text-base font-bold text-white">{b.name}</h4>
-              <p className="text-xs text-slate-400">{b.address_line1}, {b.city}</p>
-              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-                <span className="text-xs text-amber-400 font-semibold">{b.distance_from_rgia}</span>
-                <Link href={`/branches/${b.branch_code}`} className="text-xs font-bold text-white hover:underline">
-                  View →
-                </Link>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </div>
