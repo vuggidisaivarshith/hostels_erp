@@ -20,7 +20,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 
-export default function EnquiryForm() {
+function EnquiryFormContent() {
   const searchParams = useSearchParams();
   const initialBranch = searchParams.get('branch');
 
@@ -674,5 +674,19 @@ export default function EnquiryForm() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function EnquiryForm() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="card-editorial p-10 text-center text-xs text-[#718096]">
+          Loading enquiry form...
+        </div>
+      }
+    >
+      <EnquiryFormContent />
+    </React.Suspense>
   );
 }

@@ -8,6 +8,7 @@ import {
   Gender
 } from '@/types/database';
 import { allocateBed, releaseBed, getBedById } from './inventory-repo';
+import { hashPassword } from '@/lib/auth/password';
 
 // Central sequence counter
 let currentResidentSequence = 100;
@@ -51,7 +52,7 @@ function seedInitialResidents() {
     phone: '9849111222',
     email: 'aditya.sai@gmail.com',
     gender: 'male',
-    password_hash: 'devi123', // Demo password
+    password_hash: hashPassword('DeviResident@2026!'),
     aadhaar_last_four: '4589',
     emergency_contact_name: 'Satyanarayana',
     emergency_contact_phone: '9849111220',
@@ -153,7 +154,7 @@ function seedInitialResidents() {
     phone: '9876500111',
     email: 'sumanth.nair@indigo.in',
     gender: 'male',
-    password_hash: 'devi123',
+    password_hash: hashPassword('DeviResident@2026!'),
     aadhaar_last_four: '8912',
     emergency_contact_name: 'Lakshmi Nair',
     emergency_contact_phone: '9876500119',
@@ -239,7 +240,7 @@ function seedInitialResidents() {
     phone: '9701234567',
     email: 'pooja.h@airindia.in',
     gender: 'female',
-    password_hash: 'devi123',
+    password_hash: hashPassword('DeviResident@2026!'),
     aadhaar_last_four: '6621',
     emergency_contact_name: 'Vinod Hegde',
     emergency_contact_phone: '9701234560',
@@ -505,7 +506,7 @@ export function confirmAdmission(input: ConfirmAdmissionInput): {
     phone: cleanPhone,
     email: input.email,
     gender: input.gender,
-    password_hash: 'devi123', // Default initial password
+    password_hash: hashPassword('DeviResident@2026!'), // Default initial password
     emergency_contact_name: input.emergency_contact_name,
     emergency_contact_phone: input.emergency_contact_phone,
     emergency_contact_relation: input.emergency_contact_relation,

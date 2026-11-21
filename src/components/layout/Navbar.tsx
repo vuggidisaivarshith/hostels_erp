@@ -9,11 +9,8 @@ import {
   Phone,
   MessageCircle,
   Building2,
-  GraduationCap,
-  Plane,
   Shield,
   User,
-  ChevronDown
 } from 'lucide-react';
 import { InstagramIcon } from '@/components/ui/Icons';
 import { VERIFIED_CONTACTS } from '@/lib/data/branches';
@@ -22,15 +19,15 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
+  // Clean, focused global navigation
   const navLinks = [
     { name: 'Home', href: '/' },
     { name: 'About', href: '/about' },
-    { name: 'Branches (5)', href: '/branches' },
-    { name: 'Students', href: '/student-accommodation' },
-    { name: 'Airport Professionals', href: '/airport-employee-accommodation' },
+    { name: 'Branches', href: '/branches' },
     { name: 'Facilities', href: '/facilities' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Contact', href: '/contact' },
+    { name: 'Portal Login', href: '/login' },
   ];
 
   const isActive = (path: string) => {
@@ -41,13 +38,13 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#FFFFFF] border-b border-[#E5E0D7] text-[#142B45] shadow-xs">
-      {/* Top Verified Contact & Telemetry Bar */}
+      {/* Top Verified Contact Bar */}
       <div className="bg-[#142B45] text-[#FFFFFF] text-[11px] py-1.5 px-4 font-mono tracking-wider border-b border-[#1F3C5F]">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
           <div className="flex items-center gap-2">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#477B70] animate-pulse" />
             <span className="text-[#F5F1E9]">
-              DEVI HOSTELS & DEVI MANSION • 5 Centralized Branches • Shamshabad, Hyderabad
+              DEVI HOSTELS • 5 Centralized Branches • Shamshabad, Hyderabad
             </span>
           </div>
 
@@ -118,13 +115,6 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <Link
-              href="/resident/login"
-              className="px-3 py-2 rounded-md text-xs font-bold text-[#142B45] hover:bg-[#F5F1E9] flex items-center gap-1"
-            >
-              <User className="w-3.5 h-3.5 text-[#D6A85F]" />
-              <span>Resident Login</span>
-            </Link>
           </nav>
 
           {/* Action CTAs */}

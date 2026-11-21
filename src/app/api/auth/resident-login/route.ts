@@ -3,6 +3,7 @@ import { getResidentById, getResidentByPhone } from '@/lib/data/residents-repo';
 import { checkRateLimit, resetRateLimit } from '@/lib/auth/rate-limit';
 import { verifyOtp } from '@/lib/auth/otp';
 import { createSessionToken, SESSION_COOKIES } from '@/lib/auth/session';
+import { verifyPassword } from '@/lib/auth/password';
 
 export async function POST(request: NextRequest) {
   try {
@@ -82,11 +83,11 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Verify password
-      const validPassword = password === resident.password_hash || password === 'devi123';
+      // Verify password securely using cryptographic timing-safe check
+      const validPassword = resident.password_hash ? verifyPassword(password, resident.password_hash) : false;
       if (!validPassword) {
         return NextResponse.json(
-          { success: false, error: 'Incorrect account password. Please try again or log in with OTP.' },
+          { success: false, error: 'Incorrect account password. Please try again or log in with verified mobile OTP.' },
           { status: 401 }
         );
       }

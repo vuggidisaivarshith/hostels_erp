@@ -1,4 +1,6 @@
 import { UserRole } from '@/types/database';
+import { hashPassword } from '@/lib/auth/password';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export interface StaffMember {
   id: string;
@@ -8,9 +10,11 @@ export interface StaffMember {
   role: 'owner' | 'branch_manager' | 'accountant' | 'warden';
   assigned_branch_codes: number[]; // e.g. [1, 2, 3, 4, 5] for owner/accountant, [1] for branch 1 manager
   status: 'active' | 'inactive';
+  password_hash?: string;
   created_at: string;
 }
 
+// Initial verified staff store with PBKDF2 cryptographic hashes
 let staffStore: StaffMember[] = [
   {
     id: 'staff-001',
@@ -20,6 +24,7 @@ let staffStore: StaffMember[] = [
     role: 'owner',
     assigned_branch_codes: [1, 2, 3, 4, 5],
     status: 'active',
+    password_hash: hashPassword('DeviHostels@Pradeep2026!'),
     created_at: '2026-01-01',
   },
   {
@@ -30,6 +35,7 @@ let staffStore: StaffMember[] = [
     role: 'branch_manager',
     assigned_branch_codes: [1],
     status: 'active',
+    password_hash: hashPassword('DeviRamesh@Branch1!'),
     created_at: '2026-01-15',
   },
   {
@@ -40,6 +46,7 @@ let staffStore: StaffMember[] = [
     role: 'accountant',
     assigned_branch_codes: [1, 2, 3, 4, 5],
     status: 'active',
+    password_hash: hashPassword('DeviAccounts@Sridhar2026!'),
     created_at: '2026-02-01',
   },
   {
@@ -50,6 +57,7 @@ let staffStore: StaffMember[] = [
     role: 'warden',
     assigned_branch_codes: [5], // Girls Hostel Branch 1
     status: 'active',
+    password_hash: hashPassword('DeviGirls@Warden2026!'),
     created_at: '2026-02-10',
   },
   {
@@ -60,6 +68,7 @@ let staffStore: StaffMember[] = [
     role: 'branch_manager',
     assigned_branch_codes: [2],
     status: 'active',
+    password_hash: hashPassword('DeviAnand@Branch2!'),
     created_at: '2026-03-01',
   },
 ];
@@ -92,6 +101,7 @@ export function createStaffMember(input: {
   phone: string;
   role: 'owner' | 'branch_manager' | 'accountant' | 'warden';
   assigned_branch_codes: number[];
+  initial_password?: string;
 }): { success: boolean; staff?: StaffMember; error?: string } {
   if (!input.full_name || !input.email || !input.phone || !input.role) {
     return { success: false, error: 'Full name, email, phone, and role are required.' };
@@ -105,6 +115,7 @@ export function createStaffMember(input: {
     role: input.role,
     assigned_branch_codes: input.assigned_branch_codes || [1],
     status: 'active',
+    password_hash: hashPassword(input.initial_password || `DeviStaff@${Date.now()}!`),
     created_at: new Date().toISOString().split('T')[0],
   };
 
