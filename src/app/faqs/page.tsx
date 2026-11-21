@@ -15,11 +15,11 @@ export default function FaqsPage() {
     },
     {
       q: 'Is DEVI Hostels suitable for RGIA airport professionals on rotational shifts?',
-      a: 'Yes, absolutely. Our branches are configured to accommodate airport shift professionals (IndiGo, Air India, AISATS, Çelebi, GMR) with 24/7 biometric check-in, flexible warm food, and quiet daytime hours for restful sleep between rotational shifts.',
+      a: 'Yes, absolutely. Our branches are configured to accommodate airport shift professionals (IndiGo, Air India, AISATS, Çelebi, GMR) with 24/7 check-in assistance, flexible warm food, and quiet daytime hours for restful sleep between rotational shifts.',
     },
     {
       q: 'Is there a dedicated Girls Hostel branch?',
-      a: 'Yes. Branch 5 (Girls Hostel Branch 1) is a dedicated accommodation facility featuring resident lady wardens, biometric access, 24/7 CCTV surveillance, and strict visitor verification protocols.',
+      a: 'Yes. Branch 5 (Girls Hostel Branch 1) is a dedicated accommodation facility featuring resident lady wardens, 24/7 CCTV surveillance, and strict visitor verification protocols.',
     },
     {
       q: 'What facilities are included in the monthly rent?',

@@ -38,8 +38,8 @@ export default function FacilitiesPage() {
     },
     {
       icon: ShieldCheck,
-      title: '24/7 Biometric Security & CCTV',
-      desc: 'CCTV surveillance recording corridors and entrance gates, biometric access controls, and resident wardens.',
+      title: '24/7 CCTV Surveillance & Resident Wardens',
+      desc: 'CCTV surveillance recording corridors and entrance gates, with on-site resident wardens for round-the-clock safety.',
     },
     {
       icon: Zap,
@@ -60,11 +60,6 @@ export default function FacilitiesPage() {
       icon: Droplets,
       title: 'Multi-Stage RO Drinking Water',
       desc: 'Reverse Osmosis (RO) water purification units with mineral enrichment dispensers installed on every floor.',
-    },
-    {
-      icon: BookOpen,
-      title: 'Individual Wardrobes & Study Desks',
-      desc: 'Lockable steel wardrobes, personal study desks, ergonomic chairs, and bedside charging points for every resident.',
     },
   ];
 

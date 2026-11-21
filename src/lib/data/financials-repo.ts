@@ -1125,7 +1125,7 @@ let remindersStore: ReminderItem[] = [
   {
     id: 'rem-003',
     branch_code: 5,
-    title: 'CCTV Camera #8 Check & Biometric Door Sensor Diagnostics',
+    title: 'CCTV Camera #8 Check & Door Sensor Diagnostics',
     category: 'safety_inspection',
     due_date: '2026-11-22',
     priority: 'urgent',

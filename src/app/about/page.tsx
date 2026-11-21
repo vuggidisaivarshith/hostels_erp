@@ -71,7 +71,7 @@ export default function AboutPage() {
           </div>
           <h4 className="font-serif text-lg font-bold text-[#142B45]">Uncompromised Security</h4>
           <p className="text-xs text-[#718096] leading-relaxed">
-            Round-the-clock CCTV coverage, biometric entry, responsible wardens, and strict visitor control.
+            Round-the-clock CCTV coverage, responsible wardens, and strict visitor verification.
           </p>
         </div>
 

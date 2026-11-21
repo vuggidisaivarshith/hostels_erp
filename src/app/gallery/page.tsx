@@ -46,7 +46,7 @@ export default function GalleryPage() {
       title: 'Girls Hostel Branch 1 (Secured Enclave)',
       category: 'Girls Enclave',
       branch: 'Branch 5',
-      desc: 'High-security dedicated girls property with resident lady wardens, biometric access, and 24/7 CCTV.',
+      desc: 'High-security dedicated girls property with resident lady wardens, 24/7 CCTV, and gated access.',
       image: '/images/branches/branch5-main.svg',
     },
   ];

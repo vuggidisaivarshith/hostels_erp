@@ -58,10 +58,9 @@ export const DEVI_BRANCHES: VerifiedBranch[] = [
       'Attached Bathrooms with 24/7 Hot Water Geysers',
       'High-Speed Unlimited Fiber Wi-Fi',
       '3-Times Homely Buffet Meals (South & North Indian)',
-      '24/7 Biometric Entry & CCTV Security',
+      '24/7 CCTV Security & Resident Warden',
       'RO Purified Mineral Drinking Water on Every Floor',
-      'Heavy Duty Power Backup & Washing Machines',
-      'Individual Lockable Cupboards & Ergonomic Study Tables'
+      'Heavy Duty Power Backup & Washing Machines'
     ],
     images: [
       '/images/branches/branch1-main.jpg',
@@ -97,7 +96,7 @@ export const DEVI_BRANCHES: VerifiedBranch[] = [
     facilities: [
       'High-Speed Unlimited Wi-Fi',
       'Shift-Friendly Warm Food & Early Breakfast Counter',
-      '24/7 Biometric Entry & CCTV Coverage',
+      '24/7 CCTV Coverage & Resident Warden',
       'Continuous Hot Water Geysers',
       'Daily Housekeeping with Linen Wash',
       'Pure RO Drinking Water Dispensers',
@@ -209,16 +208,16 @@ export const DEVI_BRANCHES: VerifiedBranch[] = [
     verified_address: false,
     owner_verification_status: 'pending_owner_pin',
     landmark_notes: 'Shamshabad Girls Enclave — Lady warden on duty; contact management for visit verification',
-    description: 'High-security, fully monitored accommodation crafted for female college students, cabin crew, female airport ground staff, and working women. Features resident lady wardens, biometric access, and 24/7 CCTV surveillance.',
+    description: 'High-security, fully monitored accommodation crafted for female college students, cabin crew, female airport ground staff, and working women. Features resident lady wardens and 24/7 CCTV surveillance.',
     key_highlights: [
-      'Multi-tier security: Biometric access, resident female warden, 24/7 CCTV',
+      'Multi-tier security: Resident female warden, 24/7 CCTV surveillance',
       'Dedicated female accommodation with strict visitor entry protocols',
       'Wholesome, home-cooked hygienic South & North Indian food'
     ],
     facilities: [
       'High-Speed Unlimited Fiber Wi-Fi',
       '3-Times Nutritious Food & Evening Tea',
-      'Biometric Access & 24/7 CCTV Monitoring',
+      '24/7 CCTV Monitoring & Resident Warden',
       '24/7 Hot Water Geysers in Attached Washrooms',
       'Daily Housekeeping & Disinfection',
       'Multi-Stage RO Water Purifiers',
